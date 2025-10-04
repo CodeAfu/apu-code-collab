@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { cn } from "@/lib/utils";
+import Navbar from "@/components/navigation/navbar";
+import "./globals.css";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 // Initialize Inter
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -26,7 +28,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Navbar />
           {children}
+          <ThemeToggle />
         </ThemeProvider>
       </body>
     </html>
