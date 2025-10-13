@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/navigation/navbar";
+import Navbar from "@/app/_nav/navbar";
 import "./globals.css";
 import { ThemeToggle } from "@/components/theme-toggle";
+import ScreenSizeIndicator from "@/components/screen-size-indicator";
 
 // Initialize Inter
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -31,6 +32,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <ThemeToggle />
+          <ScreenSizeIndicator />
         </ThemeProvider>
       </body>
     </html>
