@@ -11,7 +11,7 @@ export default function ConnectGithub() {
       </h1>
       <p className="text-muted-foreground text-xs sm:text-base font-light mb-2">
         Connect your GitHub account to start collaborating with other student
-        developers. By linking your account, you'll be able to:
+        developers. By linking your account, you&apos;ll be able to:
       </p>
       <ul className="text-muted-foreground ml-4 list-disc list-inside mb-6 sm:mb-8 text-xs sm:text-base font-light">
         <li>Share repositories</li>

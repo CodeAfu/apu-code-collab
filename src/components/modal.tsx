@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Fragment, HTMLAttributes, useState } from "react";
+import { Fragment, HTMLAttributes } from "react";
 import { createPortal } from "react-dom";
 import Backdrop from "./backdrop";
 import { cn } from "@/lib/utils";
@@ -13,14 +13,12 @@ interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   size?: Size;
   isOpen: boolean;
   onClose: () => void;
-  exitAnimationDuration?: number;
 }
 
 export default function Modal({
   size = "md",
   isOpen,
   onClose,
-  exitAnimationDuration = 100,
   className,
   children,
   ...props

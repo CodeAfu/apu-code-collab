@@ -45,7 +45,7 @@ export default function DropdownContent({
       const viewportHeight = window.innerHeight;
       const viewportWidth = window.innerWidth;
 
-      let newPosition: Position = {};
+      const newPosition: Position = {};
 
       // Calculate initial position based on anchor
       switch (anchor) {
@@ -105,7 +105,7 @@ export default function DropdownContent({
 
       // Overflow prevention
       if (preventOverflow) {
-        const dropdownRect = dropdown.getBoundingClientRect();
+        // const dropdownRect = dropdown.getBoundingClientRect();
         const parentRect = dropdown.parentElement?.getBoundingClientRect();
 
         if (!parentRect) return;
