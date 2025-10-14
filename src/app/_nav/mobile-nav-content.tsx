@@ -9,6 +9,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Backdrop from "@/components/backdrop";
 import { X } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
+import Avatar from "@/components/avatar";
 
 interface MobileNavProps {
   routes: NavRoute[];
@@ -37,13 +39,15 @@ export default function MobileNavContent({
         )}
       >
         <div data-sidenav-content className="flex flex-col">
-          <div className="h-16 relative flex items-center">
-            <button className="absolute right-5 top-5">
+          <div className="h-16 px-2 relative flex gap-2 items-center">
+            <Avatar src="" alt="avatar" />
+            <ThemeToggle />
+            <button onClick={onClose} className="absolute right-5 top-5 hover:text-destructive-foreground">
               <X />
             </button>
           </div>
           <hr />
-          <div className="py-4 flex flex-col">
+          <div data-sidenav-content className="py-4 flex flex-col">
             {routes.map((route) => (
               <Link
                 key={route.href}

@@ -1,13 +1,11 @@
+import React from "react";
 import { cn } from "@/lib/utils";
-import React, { useState } from "react";
 
 interface BackdropProps {
   onClose: () => void;
 }
 
-export default function Backdrop({
-  onClose,
-}: BackdropProps) {
+export default function Backdrop({ onClose }: BackdropProps) {
   return (
     <div
       onClick={onClose}

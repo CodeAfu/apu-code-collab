@@ -1,9 +1,9 @@
 "use client";
 
+import React from "react";
 import { cn } from "@/lib/utils";
 import Link, { LinkProps } from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
 
 interface NavLinkProps
   extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps> {

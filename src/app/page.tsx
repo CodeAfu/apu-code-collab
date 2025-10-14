@@ -1,25 +1,9 @@
-"use client";
-
-import Modal from "@/components/modal";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import ConnectGithub from "./_landing/connect-github";
 
 export default function Home() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleClick = () => {
-    setIsOpen(true);
-  };
-
   return (
-    <>
-      <main>
-        <div>Hi</div>
-        <Button onClick={handleClick}>Modal</Button>
-      </main>
-      <Modal size="screen" isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        Content
-      </Modal>
-    </>
+    <main className="flex flex-col items-center justify-center sm:mt-0 mt-24 sm:min-h-[calc(100dvh-4rem)] py-4 px-4">
+      <ConnectGithub />
+    </main>
   );
 }
