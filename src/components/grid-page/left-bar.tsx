@@ -24,8 +24,8 @@ export default function LeftBar({
       {...props}
     >
       {onClose && (
-        <div className="border-red-500 border h-24 w-full relative">
-          <Button onClick={onClose} variant="ghost" size="icon" className="absolute top-0 right-0">
+        <div className="h-24 w-full relative">
+          <Button onClick={onClose} variant="ghost" size="icon" className="absolute -top-4 -right-4">
             <X />
           </Button>
         </div>
