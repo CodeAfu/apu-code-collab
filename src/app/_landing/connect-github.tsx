@@ -2,12 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Link as LinkIcon } from "lucide-react";
 import React from "react";
 import Link from "next/link";
-import { Octokit } from '@octokit/rest';
 
 export default function ConnectGithub() {
-  const clientId = process.env.GITHUB_OAUTH_CLIENT_ID;
-  const redirectUri = process.env.GITHUB_OAUTH_CALLBACK_URL;
-  const scope = "repo,read:user,read:org";
+  // const clientId = process.env.GITHUB_OAUTH_CLIENT_ID;
+  // const redirectUri = process.env.GITHUB_OAUTH_CALLBACK_URL;
+  // const scope = "repo,read:user,read:org";
   return (
     <div className="w-full max-w-xs sm:max-w-xl md:max-w-2xl bg-card text-card-foreground px-8 sm:px-16 py-12 shadow-lg rounded-lg">
       <h1 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">
