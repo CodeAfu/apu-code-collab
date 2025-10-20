@@ -2,13 +2,11 @@ import { cn } from "@/lib/utils";
 import React, { HTMLAttributes } from "react";
 import LeftBar from "./left-bar";
 
-interface SidebarPageProps extends HTMLAttributes<HTMLDivElement> {}
-
 export default function GridPageLayout({
   className,
   children,
   ...props
-}: SidebarPageProps) {
+}: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={cn(
