@@ -19,9 +19,21 @@ const routes: NavRoute[] = [
     label: "My Projects",
     href: "/projects",
   },
+  {
+    label: "Guides",
+    href: "/guides",
+  },
+  {
+    label: "Color Showcase",
+    href: "/color-showcase",
+    devOnly: true,
+  },
 ];
 
 export default function Navbar() {
+  const visibleRoutes = routes.filter(
+    (route) => !route.devOnly || process.env.NODE_ENV === "development"
+  );
   return (
     <Fragment>
       <nav className="sm:h-16 h-12 bg-sidebar flex px-4 justify-between items-center gap-4">
@@ -37,13 +49,13 @@ export default function Navbar() {
                 />
               </Link>
             </div>
-            <Nav routes={routes} />
+            <Nav routes={visibleRoutes} />
           </div>
           <Authentication />
         </div>
 
         <div className="flex items-center gap-4 h-full">
-          <MobileNav routes={routes} />
+          <MobileNav routes={visibleRoutes} />
         </div>
       </nav>
     </Fragment>

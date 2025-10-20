@@ -40,7 +40,7 @@ export default function MobileNavContent({
       >
         <div data-sidenav-content className="flex flex-col">
           <div className="h-16 px-2 relative flex gap-2 items-center">
-            <Avatar src="" alt="avatar" />
+            <Avatar src="/assets/user.svg" alt="avatar" />
             <ThemeToggle />
             <button onClick={onClose} className="absolute right-5 top-5 hover:text-destructive-foreground">
               <X />
