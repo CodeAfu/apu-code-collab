@@ -207,7 +207,7 @@ export default function DropdownContent({
         transition: { duration: 0.15, ease: "easeIn" },
       }}
       className={cn(
-        "absolute z-30 bg-popover p-2 min-w-[12rem] max-w-[calc(100vw-16px)]",
+        "absolute z-30 bg-card p-2 min-w-[12rem] max-w-[calc(100vw-16px)]",
         "border border-border shadow-lg rounded-md",
         className
       )}

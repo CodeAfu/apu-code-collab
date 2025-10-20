@@ -23,7 +23,7 @@ export default function MobileNav({ routes }: MobileNavProps) {
         onClick={() => setIsOpen(true)}
         size="icon"
         variant="outline"
-        className="sm:hidden flex items-center justify-center"
+        className="md:hidden flex items-center justify-center"
       >
         <Menu className="h-5 w-5" />
       </Button>

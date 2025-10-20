@@ -18,12 +18,14 @@ export default function MenuLink({
     <Link
       href={href}
       className={cn(
-        "flex items-center gap-2 p-2 text-primary hover:bg-primary/5 active:bg-primary/5 transition duration-200",
+        "flex items-center gap-2 px-2 py-1 h-10 text-sm text-card-foreground",
+        "hover:bg-popover hover:text-popover-foreground active:bg-popover active:text-popover-foreground",
+        "transition duration-200",
         className
       )}
       {...props}
     >
-      <span className="size-8 flex items-center justify-center">{icon}</span>
+      <span className="size-4 flex items-center justify-center">{icon}</span>
       {children}
     </Link>
   );

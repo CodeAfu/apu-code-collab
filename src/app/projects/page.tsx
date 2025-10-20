@@ -2,6 +2,8 @@ import React from "react";
 
 export default function ProjectsPage() {
   return (
-    <div>ProjectsPage</div>
-  )
+    <div className="min-h-screen">
+      <div></div>
+    </div>
+  );
 }
