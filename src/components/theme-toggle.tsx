@@ -4,25 +4,18 @@ import React, { useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
-  const [isDark, setIsDark] = useState(true);
-
-  useEffect(() => {
-    setIsDark(theme === "dark");
-  }, [theme]);
+  const isDark = theme === "dark";
 
   const handleClick = () => {
     switch (isDark) {
       case true:
         setTheme("light");
-        setIsDark(false);
         return;
       case false:
         setTheme("dark");
-        setIsDark(true);
         return;
     }
   };

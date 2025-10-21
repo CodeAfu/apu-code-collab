@@ -4,7 +4,7 @@ import Nav from "./nav";
 import Image from "next/image";
 import Link from "next/link";
 import MobileNav from "./mobile-nav";
-import Authentication from "../_auth/authentication";
+import Profile from "../_auth/profile";
 import MobileGridLeftToggle from "@/components/grid-page/mobile-grid-left-toggle";
 
 const routes: NavRoute[] = [
@@ -15,10 +15,6 @@ const routes: NavRoute[] = [
   {
     label: "Browse",
     href: "/browse",
-  },
-  {
-    label: "My Projects",
-    href: "/projects",
   },
   {
     label: "Guides",
@@ -53,7 +49,7 @@ export default function Navbar() {
             </div>
             <Nav routes={visibleRoutes} />
           </div>
-          <Authentication />
+          <Profile />
         </div>
 
         <div className="flex items-center gap-4 h-full">

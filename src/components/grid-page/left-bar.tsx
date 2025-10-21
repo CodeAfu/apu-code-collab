@@ -20,20 +20,20 @@ export default function LeftBar({
   return (
     <div
       ref={ref}
-      className={cn("p-8 h-full bg-sidebar overflow-hidden", className)}
+      className={cn("h-full bg-sidebar overflow-y-scroll [direction:rtl]", className)}
       {...props}
     >
       {onClose && (
         <div className="h-24 w-full relative">
-          <Button onClick={onClose} variant="ghost" size="icon" className="absolute -top-4 -right-4">
+          <Button onClick={onClose} variant="ghost" size="icon" className="absolute top-4 right-4">
             <X />
           </Button>
         </div>
       )}
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full p-8 [direction:ltr]">
         <h1 className="mb-2 font-semibold">Repositories</h1>
         <div className="flex flex-col gap-0.5">
-          {Array.from({ length: 10 }).map((_, i) => (
+          {Array.from({ length: 5 }).map((_, i) => (
             <RepositoryLink href="#" key={i}>
               Repository {i + 1}
             </RepositoryLink>
