@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import React, { Fragment } from "react";
+import { cn, generateRandomNodeKey } from "@/lib/utils";
+import React, { Fragment, HTMLAttributes } from "react";
 import { createPortal } from "react-dom";
 import { NavRoute } from "./types";
 import useMounted from "@/hooks/use-mounted";
@@ -11,6 +11,8 @@ import Backdrop from "@/components/backdrop";
 import { X } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import Avatar from "@/components/avatar";
+import { useProfileMenu } from "@/hooks/use-profile-menu";
+import { ProfileItemType } from "@/lib/types";
 
 interface MobileNavProps {
   routes: NavRoute[];
@@ -25,6 +27,7 @@ export default function MobileNavContent({
 }: MobileNavProps) {
   const mounted = useMounted();
   const pathname = usePathname();
+  const profileMenus = useProfileMenu();
 
   if (!mounted) return null;
 
@@ -34,15 +37,18 @@ export default function MobileNavContent({
       <nav
         data-sidenav-content
         className={cn(
-          "fixed right-0 top-0 z-100 w-64 h-screen bg-sidebar shadow-lg transition-transform duration-200 ease-in-out",
+          "fixed right-0 top-0 z-100 w-64 h-screen bg-sidebar shadow-lg",
+          "overflow-y-scroll transition-transform duration-200 ease-in-out",
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
         <div data-sidenav-content className="flex flex-col">
           <div className="h-16 px-2 relative flex gap-2 items-center">
             <Avatar src="/assets/user.svg" alt="avatar" />
-            <ThemeToggle />
-            <button onClick={onClose} className="absolute right-5 top-5 hover:text-destructive-foreground">
+            <button
+              onClick={onClose}
+              className="absolute right-5 top-5 hover:text-destructive-foreground"
+            >
               <X />
             </button>
           </div>
@@ -62,9 +68,71 @@ export default function MobileNavContent({
               </Link>
             ))}
           </div>
+
+          {/* TODO: Render conditionally when logged in */}
+          <hr />
+          <div data-sidenav-content className="py-4 flex flex-col">
+            {profileMenus.map((item, index) => (
+              <MobileNavProfileItem
+                key={generateRandomNodeKey(index.toString())}
+                item={item}
+                onClose={onClose}
+              />
+            ))}
+          </div>
         </div>
       </nav>
     </Fragment>,
     document.body
+  );
+}
+
+interface MobileNavProfileItemProps
+  extends Omit<HTMLAttributes<HTMLElement>, "onClick"> {
+  item: ProfileItemType;
+  onClose: () => void;
+}
+
+function MobileNavProfileItem({
+  item,
+  onClose,
+  className,
+  ...props
+}: MobileNavProfileItemProps) {
+  if (item.type === "separator") {
+    return;
+  }
+
+  const baseClasses = cn(
+    "flex items-center gap-2 px-2 py-1 h-10 text-sm text-card-foreground",
+    "hover:bg-popover hover:text-popover-foreground active:bg-popover active:text-popover-foreground",
+    "transition duration-200",
+    className
+  );
+
+  const content = (
+    <>
+      <span>{item.icon}</span>
+      {item.label}
+    </>
+  );
+
+  if (item.type === "link") {
+    return (
+      <Link
+        href={item.href}
+        onClick={onClose}
+        className={baseClasses}
+        {...props}
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <button onClick={item.onClick} className={baseClasses} {...props}>
+      {content}
+    </button>
   );
 }
