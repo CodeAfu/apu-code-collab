@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { ThemeProvider } from "next-themes";
 import { cn } from "@/lib/utils";
 import Navbar from "@/app/_nav/navbar";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -9,6 +8,7 @@ import { Archivo, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import DevTray from "@/components/dev-tray";
 import Footer from "@/components/footer";
+import Providers from "@/providers/providers";
 
 export const metadata: Metadata = {
   title: "APU CodeSpace",
@@ -42,12 +42,7 @@ export default function RootLayout({
           archivo.className
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <Providers>
           <Navbar />
           {children}
           <Footer />
@@ -55,7 +50,7 @@ export default function RootLayout({
             <ThemeToggle />
           </DevTray>
           <ScreenSizeIndicator />
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

@@ -9,3 +9,7 @@ export function generateRandomNodeKey(val?: string) {
   const randomId = `${Date.now()}-${Math.random().toString(36)}`;
   return val ? `${randomId}-${val}` : randomId;
 }
+
+export function getAccessToken() {
+  return localStorage.getItem("access_token") || "";
+}
