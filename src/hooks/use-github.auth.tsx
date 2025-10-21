@@ -6,8 +6,11 @@ import { getAccessToken } from "@/lib/utils";
 export const useGithubLogin = () => {
   return useMutation({
     mutationFn: async () => {
+      if (!API_BASE_URL) {
+        throw new Error("API_BASE_URL is not configured");
+      }
       window.location.href = `${API_BASE_URL}/api/v1/auth/github/login`;
-      // return Promise.resolve();
+      return Promise.resolve();
     },
   });
 };
@@ -17,12 +20,21 @@ export const useGithubDisconnect = () => {
 
   return useMutation({
     mutationFn: async () => {
+      if (!API_BASE_URL) {
+        throw new Error("API_BASE_URL is not configured");
+      }
+
+      const token = getAccessToken();
+      if (!token) {
+        throw new Error("No access token available");
+      }
+
       const response = await axios.post(
         `${API_BASE_URL}/api/v1/auth/github/disconnect`,
         {},
         {
           headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -40,6 +52,9 @@ export const useGithubStatus = () => {
   return useQuery({
     queryKey: ["github-status"],
     queryFn: async () => {
+      if (!API_BASE_URL) {
+        throw new Error("API_BASE_URL is not configured");
+      }
       const response = await axios.get(
         `${API_BASE_URL}/api/v1/auth/github/status`,
         {
@@ -51,5 +66,7 @@ export const useGithubStatus = () => {
       return response.data;
     },
     enabled: !!accessToken,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 1,
   });
 };
