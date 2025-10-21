@@ -74,7 +74,7 @@ export default function MobileNavContent({
           <div data-sidenav-content className="py-4 flex flex-col">
             {profileMenus.map((item, index) => (
               <MobileNavProfileItem
-                key={generateRandomNodeKey(index.toString())}
+                key={`mobile-profile-item-${index}`}
                 item={item}
                 onClose={onClose}
               />
@@ -131,7 +131,14 @@ function MobileNavProfileItem({
   }
 
   return (
-    <button onClick={item.onClick} className={baseClasses} {...props}>
+    <button
+      onClick={() => {
+        item.onClick();
+        onClose();
+      }}
+      className={baseClasses}
+      {...props}
+    >
       {content}
     </button>
   );

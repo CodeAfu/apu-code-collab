@@ -15,7 +15,7 @@ export default function Profile() {
         <div className="flex flex-col rounded bg-card w-80">
           {menus.map((item, index) => (
             <AccountItem
-              key={generateRandomNodeKey(item.type + index.toString())}
+              key={generateRandomNodeKey(`profile-item-${index}`)}
               item={item}
             />
           ))}

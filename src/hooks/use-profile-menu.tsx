@@ -49,7 +49,7 @@ export function useProfileMenu() {
       {
         type: "button",
         icon: <LogIn />,
-        onClick: () => console.log("Sign out"),
+        onClick: () => console.log("Sign In"),
         label: "Sign In",
       },
     ],
