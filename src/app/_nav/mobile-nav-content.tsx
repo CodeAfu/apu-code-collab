@@ -1,6 +1,6 @@
 "use client";
 
-import { cn, generateRandomNodeKey } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import React, { Fragment, HTMLAttributes } from "react";
 import { createPortal } from "react-dom";
 import { NavRoute } from "./types";
@@ -9,7 +9,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Backdrop from "@/components/backdrop";
 import { X } from "lucide-react";
-import { ThemeToggle } from "@/components/theme-toggle";
 import Avatar from "@/components/avatar";
 import { useProfileMenu } from "@/hooks/use-profile-menu";
 import { ProfileItemType } from "@/lib/types";
