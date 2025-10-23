@@ -66,7 +66,7 @@ export default function Dropdown({
   }, [isOpen]);
 
   return (
-    <div className="relative group">
+    <div className="relative group flex flex-col items-center">
       <DropdownTrigger onClick={handleClick} ref={triggerRef}>
         {triggerNode}
       </DropdownTrigger>

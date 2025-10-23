@@ -10,7 +10,7 @@ import { generateRandomNodeKey } from "@/lib/utils";
 export default function Profile() {
   const menus = useProfileMenu();
   return (
-    <div className="md:flex hidden">
+    <div className="md:flex items-center justify-center hidden">
       <Dropdown triggerNode={<Avatar src="/assets/user.svg" alt="avatar" />}>
         <div className="flex flex-col rounded bg-card w-80">
           {menus.map((item, index) => (
