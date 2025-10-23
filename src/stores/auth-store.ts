@@ -1,11 +1,6 @@
+import { Token } from "@/types/auth";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-
-interface Token {
-  access_token: string;
-  refresh_token: string;
-  token_type: string;
-}
 
 interface AuthState {
   token: Token | null;
