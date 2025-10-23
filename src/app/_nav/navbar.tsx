@@ -7,7 +7,9 @@ import MobileNav from "./mobile-nav";
 import Profile from "../_auth/profile";
 import MobileGridLeftToggle from "@/components/grid-page/mobile-grid-left-toggle";
 import { Button } from "@/components/ui/button";
-import LoginButton from "@/components/login/login-button";
+import AuthComponents from "./auth-components";
+// import { Button } from "@/components/ui/button";
+// import LoginButton from "@/components/login/login-button";
 
 const routes: NavRoute[] = [
   {
@@ -52,8 +54,7 @@ export default function Navbar() {
             <Nav routes={visibleRoutes} />
           </div>
           <div className="flex items-center gap-2">
-            <LoginButton />
-            <Profile />
+            <AuthComponents />
           </div>
         </div>
 

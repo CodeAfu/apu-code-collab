@@ -21,7 +21,7 @@ export default function ProfileItem({
 
   const baseClasses = cn(
     "flex items-center gap-2 px-2 py-1 h-10 text-sm text-card-foreground",
-    "hover:bg-popover hover:text-popover-foreground active:bg-popover active:text-popover-foreground",
+    "hover:bg-popover hover:text-popover-foreground active:bg-popover active:text-popover-foreground hover:cursor-pointer",
     "transition duration-200",
     className
   );

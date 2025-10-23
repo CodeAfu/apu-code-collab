@@ -39,7 +39,7 @@ const login = async (data: LoginForm): Promise<LoginResponse> => {
 };
 
 interface LoginFormProps {
-  closeModal: () => void;
+  closeModal?: () => void;
 }
 
 export default function LoginForm({ closeModal }: LoginFormProps) {
@@ -56,7 +56,7 @@ export default function LoginForm({ closeModal }: LoginFormProps) {
     mutationFn: login,
     onSuccess: (data) => {
       setToken(data);
-      closeModal();
+      if (closeModal) closeModal();
     },
     onError: (error) => {
       if (
@@ -81,15 +81,15 @@ export default function LoginForm({ closeModal }: LoginFormProps) {
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-      <h1 className="text-xl font-semibold mb-2">Login</h1>
-      <div className="mb-4 flex flex-col gap-2">
+      <h1 className="text-2xl font-semibold mb-4">Login</h1>
+      <div className="mb-8 flex flex-col gap-2">
         <div>
           <label className="text-sm" htmlFor="login_email_field">
             Email:
           </label>
           <Input
             id="login_email_field"
-            className="py-1 text-sm rounded"
+            className="py-1 text-sm sm:text-base rounded"
             {...register("email")}
           />
           {errors.email && (
@@ -103,7 +103,7 @@ export default function LoginForm({ closeModal }: LoginFormProps) {
           <Input
             id="login_password_field"
             type="password"
-            className="py-1 text-sm rounded"
+            className="py-1 text-sm sm:text-base rounded"
             {...register("password")}
           />
           {errors.password && (
@@ -115,7 +115,9 @@ export default function LoginForm({ closeModal }: LoginFormProps) {
         {isPending ? "Loading..." : "Login"}
       </Button>
       {isError && (
-        <p className="text-red-500 text-sm mt-2">{getErrorMessage()}</p>
+        <p className="text-red-500 text-sm sm:text-base mt-2">
+          {getErrorMessage()}
+        </p>
       )}
     </form>
   );

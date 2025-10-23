@@ -15,7 +15,7 @@ export default function ConnectGitHubButton() {
       className="w-full sm:h-12 sm:text-lg text-base rounded flex items-center justify-center gap-2"
     >
       <LinkIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-      Connect to GitHub Dear Student
+      Connect to GitHub
     </Button>
   );
 }
