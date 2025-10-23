@@ -23,7 +23,7 @@ export type ProfileItemType =
   | ProfileItemButton
   | ProfileItemSeparator;
 
-export interface FastAPIAuthError {
+export interface AuthError {
   detail: {
     message: string;
     error_code: string;

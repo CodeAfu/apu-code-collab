@@ -1,13 +1,15 @@
 "use client";
 
 import axios from "axios";
+import z from "zod";
 import { Input } from "@/components/input";
 import { Button } from "@/components/ui/button";
 import { API_BASE_URL } from "@/lib/consts";
 import { useForm } from "react-hook-form";
-import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import { AuthError } from "@/lib/types";
+import { useSetAuthToken } from "@/stores/auth-store";
 
 const loginSchema = z.object({
   email: z.email("Invalid email"),
@@ -23,11 +25,24 @@ interface LoginResponse {
 }
 
 const login = async (data: LoginForm): Promise<LoginResponse> => {
-  const response = await axios.post(`${API_BASE_URL}/api/v1/auth/token`, data);
+  const response = await axios.post(
+    `${API_BASE_URL}/api/v1/auth/token`,
+    new URLSearchParams({
+      username: data.email,
+      password: data.password,
+    }),
+    {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    }
+  );
   return response.data;
 };
 
-export default function LoginForm() {
+interface LoginFormProps {
+  closeModal: () => void;
+}
+
+export default function LoginForm({ closeModal }: LoginFormProps) {
   const {
     register,
     handleSubmit,
@@ -35,22 +50,33 @@ export default function LoginForm() {
   } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
   });
+  const setToken = useSetAuthToken();
 
-  const mutation = useMutation({
+  const { mutate, isPending, isError, error } = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      console.log(data);
+      setToken(data);
+      closeModal();
     },
     onError: (error) => {
-      if (axios.isAxiosError(error) && error.response?.data) {
-        const detail = error.response.data.detail;
-        console.error(detail.message);
+      if (
+        axios.isAxiosError<AuthError>(error) &&
+        error.response?.data?.detail
+      ) {
+        console.error(error.response.data.detail.message);
       }
     },
   });
 
   const onSubmit = (data: LoginForm) => {
-    mutation.mutate(data);
+    mutate(data);
+  };
+
+  const getErrorMessage = () => {
+    if (axios.isAxiosError<AuthError>(error) && error.response?.data?.detail) {
+      return error.response.data.detail.message;
+    }
+    return "Login failed";
   };
 
   return (
@@ -85,11 +111,11 @@ export default function LoginForm() {
           )}
         </div>
       </div>
-      <Button type="submit" disabled={mutation.isPending}>
-        {mutation.isPending ? "Loading..." : "Login"}
+      <Button type="submit" disabled={isPending}>
+        {isPending ? "Loading..." : "Login"}
       </Button>
-      {mutation.isError && (
-        <p className="text-red-500 text-sm mt-2">{mutation.error.message}</p>
+      {isError && (
+        <p className="text-red-500 text-sm mt-2">{getErrorMessage()}</p>
       )}
     </form>
   );

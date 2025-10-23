@@ -19,7 +19,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     <Fragment>
       {isOpen && <Backdrop onClose={onClose} />}
       <Modal className="p-8" size="lg" isOpen={isOpen} onClose={onClose}>
-        <LoginForm />
+        <LoginForm closeModal={onClose} />
       </Modal>
     </Fragment>,
     document.body
