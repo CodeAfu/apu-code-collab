@@ -13,7 +13,7 @@ export default function Profile() {
   const menus = useProfileMenu();
   const logOut = useClearAuthToken();
   return (
-    <div className="md:flex items-center justify-center hidden">
+    <div className="flex items-center justify-center">
       <Dropdown triggerNode={<Avatar src="/assets/user.svg" alt="avatar" />}>
         <div className="flex flex-col rounded bg-card w-80">
           {menus.map((item, index) => (

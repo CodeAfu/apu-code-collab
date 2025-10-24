@@ -1,75 +1,47 @@
 "use client";
 
 import axios from "axios";
-import z from "zod";
 import { Input } from "@/components/input";
 import { Button } from "@/components/ui/button";
-import { API_BASE_URL } from "@/lib/consts";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { AuthError } from "@/lib/types";
 import { useSetAuthToken } from "@/stores/auth-store";
+import { loginQuery } from "@/queries/login-query";
+import { loginSchema, LoginFormType } from "../types";
+import { isLoggedIn } from "@/lib/auth";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
-const loginSchema = z.object({
-  email: z.email("Invalid email"),
-  password: z.string().min(1, "Password required"),
-});
+export default function LoginForm() {
+  const loggedIn = isLoggedIn();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "/";
 
-type LoginForm = z.infer<typeof loginSchema>;
+  useEffect(() => {
+    if (loggedIn) router.push(redirectTo);
+  }, [loggedIn, router, redirectTo]);
 
-interface LoginResponse {
-  access_token: string;
-  refresh_token: string;
-  token_type: string;
-}
-
-const login = async (data: LoginForm): Promise<LoginResponse> => {
-  const response = await axios.post(
-    `${API_BASE_URL}/api/v1/auth/token`,
-    new URLSearchParams({
-      username: data.email,
-      password: data.password,
-    }),
-    {
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    }
-  );
-  return response.data;
-};
-
-interface LoginFormProps {
-  closeModal?: () => void;
-}
-
-export default function LoginForm({ closeModal }: LoginFormProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginForm>({
+  } = useForm<LoginFormType>({
     resolver: zodResolver(loginSchema),
   });
   const setToken = useSetAuthToken();
 
-  const { mutate, isPending, isError, error } = useMutation({
-    mutationFn: login,
-    onSuccess: (data) => {
-      setToken(data);
-      if (closeModal) closeModal();
-    },
-    onError: (error) => {
-      if (
-        axios.isAxiosError<AuthError>(error) &&
-        error.response?.data?.detail
-      ) {
-        console.error(error.response.data.detail.message);
-      }
-    },
-  });
+  const {
+    mutate: handleLogin,
+    isPending,
+    isError,
+    error,
+  } = useMutation(loginQuery(setToken));
 
-  const onSubmit = (data: LoginForm) => {
-    mutate(data);
+  const onSubmit = (data: LoginFormType) => {
+    handleLogin(data);
   };
 
   const getErrorMessage = () => {
@@ -84,11 +56,11 @@ export default function LoginForm({ closeModal }: LoginFormProps) {
       <h1 className="text-2xl font-semibold mb-4">Login</h1>
       <div className="mb-8 flex flex-col gap-2">
         <div>
-          <label className="text-sm" htmlFor="login_email_field">
+          <label className="text-sm" htmlFor="login-email-field">
             Email:
           </label>
           <Input
-            id="login_email_field"
+            id="login-email-field"
             className="py-1 text-sm sm:text-base rounded"
             {...register("email")}
           />
@@ -97,11 +69,11 @@ export default function LoginForm({ closeModal }: LoginFormProps) {
           )}
         </div>
         <div>
-          <label className="text-sm" htmlFor="login_password_field">
+          <label className="text-sm" htmlFor="login-password-field">
             Password:
           </label>
           <Input
-            id="login_password_field"
+            id="login-password-field"
             type="password"
             className="py-1 text-sm sm:text-base rounded"
             {...register("password")}
