@@ -1,7 +1,7 @@
 import GridPageLayout from "@/components/grid-page/grid-page-layout";
-import { Card } from "@/components/ui/card";
 import React from "react";
 import SearchRepository from "./_components/search-repository";
+import Card from "@/components/card";
 
 export default function BrowsePage() {
   return (

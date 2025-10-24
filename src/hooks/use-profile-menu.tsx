@@ -4,8 +4,6 @@ import { ProfileItemType } from "@/lib/types";
 import {
   BookMarked,
   CircleUserRound,
-  LogIn,
-  LogOut,
   Moon,
   Sun,
 } from "lucide-react";
@@ -36,21 +34,6 @@ export function useProfileMenu() {
         icon: isDark ? <Sun /> : <Moon />,
         onClick: () => setTheme(isDark ? "light" : "dark"),
         label: isDark ? "Light Theme" : "Dark Theme",
-      },
-      {
-        type: "separator",
-      },
-      {
-        type: "button",
-        icon: <LogOut />,
-        onClick: () => console.log("Sign out"),
-        label: "Sign Out",
-      },
-      {
-        type: "button",
-        icon: <LogIn />,
-        onClick: () => console.log("Sign In"),
-        label: "Sign In",
       },
     ],
     [isDark, setTheme]

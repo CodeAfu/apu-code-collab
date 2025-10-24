@@ -35,14 +35,21 @@ export default function Modal({
       <div
         data-modal-content
         className={cn(
-          "z-100 fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-          "bg-card w-full text-card-foreground p-4 rounded animate-fade-in",
-          computedSize,
-          className
+          "group z-100 fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+          "w-full px-2",
+          computedSize
         )}
         {...props}
       >
-        {children}
+        <div
+          data-modal-content
+          className={cn(
+            "bg-card text-card-foreground p-4 rounded animate-fade-in",
+            className
+          )}
+        >
+          {children}
+        </div>
       </div>
     </Fragment>,
     document.body

@@ -22,3 +22,11 @@ export type ProfileItemType =
   | ProfileItemLink
   | ProfileItemButton
   | ProfileItemSeparator;
+
+export interface AuthError {
+  detail: {
+    message: string;
+    error_code: string;
+    debug?: string;
+  };
+}
