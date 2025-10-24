@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { AuthError } from "@/lib/types";
 import { useSetAuthToken } from "@/stores/auth-store";
-import { loginQuery } from "@/queries/login-query";
+import { loginQuery } from "@/app/user/login/query";
 import { loginSchema, LoginFormType } from "../types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useIsLoggedIn } from "@/hooks/use-is-logged-in";
+import { AuthError } from "@/types/auth";
 
 export default function LoginForm() {
   const loggedIn = useIsLoggedIn();
@@ -37,7 +37,7 @@ export default function LoginForm() {
     mutate: handleLogin,
     isPending,
     isError,
-    error,
+    error: queryError,
   } = useMutation(loginQuery(setToken));
 
   const onSubmit = (data: LoginFormType) => {
@@ -45,8 +45,11 @@ export default function LoginForm() {
   };
 
   const getErrorMessage = () => {
-    if (axios.isAxiosError<AuthError>(error) && error.response?.data?.detail) {
-      return error.response.data.detail.message;
+    if (
+      axios.isAxiosError<AuthError>(queryError) &&
+      queryError.response?.data?.detail
+    ) {
+      return queryError.response.data.detail.message;
     }
     return "Login failed";
   };
@@ -56,11 +59,11 @@ export default function LoginForm() {
       <h1 className="text-2xl font-semibold mb-4">Login</h1>
       <div className="mb-8 flex flex-col gap-2">
         <div>
-          <label className="text-sm" htmlFor="login-email-field">
+          <label className="text-sm" htmlFor="email-field">
             Email:
           </label>
           <Input
-            id="login-email-field"
+            id="email-field"
             className="py-1 text-sm sm:text-base rounded"
             {...register("email")}
           />
@@ -69,11 +72,11 @@ export default function LoginForm() {
           )}
         </div>
         <div>
-          <label className="text-sm" htmlFor="login-password-field">
+          <label className="text-sm" htmlFor="password-field">
             Password:
           </label>
           <Input
-            id="login-password-field"
+            id="password-field"
             type="password"
             className="py-1 text-sm sm:text-base rounded"
             {...register("password")}
@@ -87,7 +90,7 @@ export default function LoginForm() {
         {isPending ? "Loading..." : "Login"}
       </Button>
       {isError && (
-        <p className="text-red-500 text-sm sm:text-base mt-2">
+        <p className="text-red-500 text-sm mt-2">
           {getErrorMessage()}
         </p>
       )}

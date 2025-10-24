@@ -23,10 +23,4 @@ export type ProfileItemType =
   | ProfileItemButton
   | ProfileItemSeparator;
 
-export interface AuthError {
-  detail: {
-    message: string;
-    error_code: string;
-    debug?: string;
-  };
-}
+
