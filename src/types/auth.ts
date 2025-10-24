@@ -12,3 +12,11 @@ export interface DecodedToken {
   type: "access" | "refresh";
   exp: number;
 }
+
+export interface AuthError {
+  detail: {
+    message: string;
+    error_code: string;
+    debug?: string;
+  };
+}
