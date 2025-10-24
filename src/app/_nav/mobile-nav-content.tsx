@@ -9,7 +9,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Backdrop from "@/components/backdrop";
 import { X } from "lucide-react";
-import Avatar from "@/components/avatar";
 import { useProfileMenu } from "@/hooks/use-profile-menu";
 import { ProfileItemType } from "@/lib/types";
 import AuthComponents from "./auth-components";

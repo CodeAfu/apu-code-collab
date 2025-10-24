@@ -10,12 +10,12 @@ import { AuthError } from "@/lib/types";
 import { useSetAuthToken } from "@/stores/auth-store";
 import { loginQuery } from "@/queries/login-query";
 import { loginSchema, LoginFormType } from "../types";
-import { isLoggedIn } from "@/lib/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { useIsLoggedIn } from "@/hooks/use-is-logged-in";
 
 export default function LoginForm() {
-  const loggedIn = isLoggedIn();
+  const loggedIn = useIsLoggedIn();
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") || "/";

@@ -3,11 +3,11 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
 import Profile from "../../components/auth/profile";
-import { isLoggedIn } from "@/lib/auth";
 import { usePathname, useRouter } from "next/navigation";
+import { useIsLoggedIn } from "@/hooks/use-is-logged-in";
 
 export default function AuthComponents() {
-  const loggedIn = isLoggedIn();
+  const loggedIn = useIsLoggedIn();
   const router = useRouter();
   const pathname = usePathname();
 

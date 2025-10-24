@@ -1,4 +1,3 @@
-import RegisterGuide from "@/app/user/register/_components/register-guide";
 import Card from "@/components/card";
 import React from "react";
 
