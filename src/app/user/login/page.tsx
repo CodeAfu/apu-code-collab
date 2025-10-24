@@ -1,4 +1,4 @@
-import LoginForm from "@/app/_nav/login-form";
+import LoginForm from "@/app/user/login/_components/login-form";
 import Card from "@/components/card";
 import React from "react";
 

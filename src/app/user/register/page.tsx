@@ -8,9 +8,9 @@ export default function RegisterPage() {
       className="sm:min-h-[calc(100dvh-4rem)] min-h-[calc(100dvh-3rem)] px-4
                     flex flex-col items-center justify-center"
     >
-      <div className="w-full max-w-7xl grid lg:grid-cols-[1fr_360px] gap-4">
+      <div className="w-full max-w-4xl">
         <Card>{/* Registration form */}</Card>
-        <RegisterGuide />
+        {/* <RegisterGuide /> */}
       </div>
     </div>
   );
