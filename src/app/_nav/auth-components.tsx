@@ -20,7 +20,7 @@ export default function AuthComponents() {
       {loggedIn ? (
         <Profile />
       ) : (
-        <Button onClick={handleRouter} variant="outline">
+        <Button onClick={handleRouter} variant="secondary">
           Sign in
         </Button>
       )}

@@ -1,7 +1,7 @@
 import LoginForm from "@/app/user/login/_components/login-form";
 import Card from "@/components/card";
 import LoadingSpinner from "@/components/loading-spinner";
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 
 export default function LoginPage() {
   return (
