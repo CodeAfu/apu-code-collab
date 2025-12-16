@@ -33,7 +33,7 @@ export default function Navbar() {
   );
   return (
     <Fragment>
-      <nav className="sm:h-16 h-12 bg-sidebar flex px-2 justify-between items-center gap-4 border-b border-border">
+      <nav className="sm:h-16 h-12 bg-card flex px-2 justify-between items-center gap-4 border-b border-border">
         <div className="flex items-center justify-between gap-4 w-full h-full">
           <div className="flex items-center gap-2 h-full">
             <MobileGridLeftToggle />
