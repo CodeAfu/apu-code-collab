@@ -5,6 +5,7 @@ import React from "react";
 import Profile from "../../components/auth/profile";
 import { usePathname, useRouter } from "next/navigation";
 import { useIsLoggedIn } from "@/hooks/use-is-logged-in";
+import Link from "next/link";
 
 export default function AuthComponents() {
   const loggedIn = useIsLoggedIn();
@@ -20,10 +21,16 @@ export default function AuthComponents() {
       {loggedIn ? (
         <Profile />
       ) : (
-        <Button onClick={handleRouter} variant="secondary">
-          Sign in
-        </Button>
-      )}
+        <div className="flex items-center gap-2">
+          <Button onClick={handleRouter}>Login</Button>
+          <Button asChild>
+            <Link href="/user/register">
+              Register
+            </Link>
+          </Button>
+        </div >
+      )
+      }
     </>
   );
 }

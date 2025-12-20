@@ -14,6 +14,7 @@ import axios from "axios";
 import { AuthError } from "@/types/auth";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
+import { Minus, Plus } from "lucide-react";
 
 export default function RegisterForm() {
   const [showOptionalInfo, setShowOptionalInfo] = useState(false);
@@ -38,21 +39,11 @@ export default function RegisterForm() {
     mutate: handleRegister,
     isPending,
     isError,
-    error: queryError,
+    error: registerError,
   } = useMutation(registerMutationOptions());
 
   const onSubmit = (data: RegisterFormType) => {
     handleRegister(data);
-  };
-
-  const getErrorMessage = () => {
-    if (
-      axios.isAxiosError<AuthError>(queryError) &&
-      queryError.response?.data?.detail
-    ) {
-      return queryError.response.data.detail.message;
-    }
-    return "Login failed";
   };
 
   return (
@@ -94,12 +85,12 @@ export default function RegisterForm() {
             type="button"
             onClick={() => setShowOptionalInfo(!showOptionalInfo)}
             className={cn(
-              "relative ml-2 bg-card border border-border rounded p-1 text-xs z-10",
+              "inline-flex gap-2 relative bg-card border border-border rounded p-1 text-xs z-10",
               "hover:cursor-pointer hover:bg-muted/20 hover:text-foreground transition duration-200",
               showOptionalInfo ? "text-foreground ring" : "text-muted-foreground"
             )}
           >
-            Personalize Information
+            Personal Information {showOptionalInfo ? <span><Minus className="w-4 h-4" /></span> : <span><Plus className="w-4 h-4" /></span>}
           </button>
         </div>
 
@@ -114,7 +105,7 @@ export default function RegisterForm() {
               }}
               className="flex flex-col border border-border rounded-lg px-4 mb-4"
             >
-              <p className="text-muted-foreground text-xs mt-4 italic mb-2">Optional fields</p>
+              <p className="text-muted-foreground text-xs mt-4 italic mb-2">Optional</p>
               <div className="flex sm:flex-row flex-col gap-4 w-full mb-2">
                 <div className="flex-1">
                   <label className="text-sm" htmlFor="firstname-field">
@@ -162,14 +153,16 @@ export default function RegisterForm() {
             </motion.div>
           )}
         </AnimatePresence>
-        <Button className="hover:cursor-pointer" disabled={isPending} type="submit">
+        <Button className="hover:cursor-pointer text-lg mt-4" size="lg" disabled={isPending} type="submit">
           Register
         </Button>
-        {
-          isError && (
-            <p className="text-red-500 text-sm mt-2">{getErrorMessage()}</p>
-          )
-        }
+        {isError && axios.isAxiosError<AuthError>(registerError) && Array.isArray(registerError.response?.data?.detail) && (
+          <div className="text-red-500 text-sm mt-2 space-y-1">
+            {registerError.response.data.detail.map((err, i) => (
+              <p key={i}>{err.msg}</p>
+            ))}
+          </div>
+        )}
       </form >
     </div >
   );
