@@ -9,8 +9,8 @@ export default function RegisterPage() {
       className="sm:min-h-[calc(100dvh-4rem)] min-h-[calc(100dvh-3rem)] px-4
                     flex flex-col items-center justify-center"
     >
-      <RegisterForm />
       <Suspense fallback={<Loading />}>
+        <RegisterForm />
       </Suspense>
     </div>
   );
