@@ -1,14 +1,15 @@
 import axios from "axios";
 import { LoginFormType, LoginResponse } from "@/app/user/login/types";
 import { API_BASE_URL } from "@/lib/consts";
-import { AuthError, Token } from "@/types/auth";
-import { UseMutationOptions } from "@tanstack/react-query";
+import { Token } from "@/types/auth";
+import { mutationOptions } from "@tanstack/react-query";
+import { logApiErr } from "@/lib/utils";
 
 const login = async (data: LoginFormType): Promise<LoginResponse> => {
   const response = await axios.post<LoginResponse>(
     `${API_BASE_URL}/api/v1/auth/token`,
     new URLSearchParams({
-      username: data.email,
+      tpNumber: data.tpNumber,
       password: data.password,
     }),
     {
@@ -18,16 +19,14 @@ const login = async (data: LoginFormType): Promise<LoginResponse> => {
   return response.data;
 };
 
-export const loginQuery = (
+export const loginMutationOptions = (
   setToken: (token: Token) => void
-): UseMutationOptions<LoginResponse, Error, LoginFormType> => ({
+) => mutationOptions({
   mutationFn: login,
   onSuccess: (data: LoginResponse) => {
     setToken(data);
   },
-  onError: (error: unknown) => {
-    if (axios.isAxiosError<AuthError>(error) && error.response?.data?.detail) {
-      console.error(error.response.data.detail.message);
-    }
+  onError: (error) => {
+    logApiErr(error);
   },
 });
