@@ -1,40 +1,33 @@
-import axios from "axios";
 import { RegisterFormType } from "./types";
-import { API_BASE_URL } from "@/lib/consts";
-import { AuthError } from "@/types/auth";
 import { UseMutationOptions } from "@tanstack/react-query";
+import { logApiErr } from "@/lib/utils";
+import api from "@/lib/api";
 
-const register = async (data: RegisterFormType): Promise<boolean> => {
-  const response = await axios.post<boolean | null>(
-    `${API_BASE_URL}/api/v1/auth/register`,
-    {
-      first_name: data.firstName,
-      last_name: data.lastName,
-      apu_id: data.apuId,
-      email: data.email,
-      password: data.password,
-      role: data.role,
-      is_active: true,
-    },
-    {
-      headers: { "Content-Type": "application/json" },
-    }
-  );
-  return response.data ?? false;
+const register = async (data: RegisterFormType) => {
+  const payload = {
+    first_name: data.firstName,
+    last_name: data.lastName,
+    apu_id: data.apuId,
+    email: data.email,
+    password: data.password,
+    role: data.role,
+    is_active: true,
+  }
+
+  const response = await api.post(`/api/v1/auth/register`, payload);
+  return response.data;
 };
 
-export const registerQuery = (): UseMutationOptions<
+export const registerMutationOptions = (): UseMutationOptions<
   boolean,
   Error,
   RegisterFormType
 > => ({
   mutationFn: register,
-  onSuccess: () => {
-    console.log("User registered successfully!");
+  onSuccess: (data) => {
+    console.log("User registered:", data);
   },
-  onError: (error: unknown) => {
-    if (axios.isAxiosError<AuthError>(error) && error.response?.data?.detail) {
-      console.error(error.response.data.detail.message);
-    }
+  onError: (error) => {
+    logApiErr(error);
   },
 });

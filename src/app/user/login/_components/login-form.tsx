@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useSetAuthToken } from "@/stores/auth-store";
-import { loginQuery } from "@/app/user/login/query";
+import { loginMutationOptions } from "@/app/user/login/query";
 import { loginSchema, LoginFormType } from "../types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
@@ -18,10 +18,15 @@ export default function LoginForm() {
   const loggedIn = useIsLoggedIn();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/";
+  const redirectTo = searchParams.get("redirectTo")
 
   useEffect(() => {
-    if (loggedIn) router.push(redirectTo);
+    if (!loggedIn) return;
+    if (redirectTo) {
+      router.push(redirectTo);
+    } else {
+      router.back();
+    }
   }, [loggedIn, router, redirectTo]);
 
   const {
@@ -38,7 +43,7 @@ export default function LoginForm() {
     isPending,
     isError,
     error: queryError,
-  } = useMutation(loginQuery(setToken));
+  } = useMutation(loginMutationOptions(setToken));
 
   const onSubmit = (data: LoginFormType) => {
     handleLogin(data);
@@ -59,16 +64,16 @@ export default function LoginForm() {
       <h1 className="text-2xl font-semibold mb-4">Login</h1>
       <div className="mb-8 flex flex-col gap-2">
         <div>
-          <label className="text-sm" htmlFor="email-field">
-            Email:
+          <label className="text-sm" htmlFor="tp-field">
+            TP Number:
           </label>
           <Input
-            id="email-field"
+            id="tp-field"
             className="py-1 text-sm sm:text-base rounded"
-            {...register("email")}
+            {...register("tpNumber")}
           />
-          {errors.email && (
-            <p className="text-red-500 text-xs">{errors.email.message}</p>
+          {errors.tpNumber && (
+            <p className="text-red-500 text-xs">{errors.tpNumber.message}</p>
           )}
         </div>
         <div>
