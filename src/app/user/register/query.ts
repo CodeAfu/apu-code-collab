@@ -1,7 +1,8 @@
 import { RegisterFormType } from "./types";
 import { UseMutationOptions } from "@tanstack/react-query";
-import { logApiErr } from "@/lib/utils";
+import { jsonLog, logApiErr } from "@/lib/utils";
 import api from "@/lib/api";
+import axios, { AxiosError } from "axios";
 
 const register = async (data: RegisterFormType) => {
   const payload = {
@@ -10,10 +11,8 @@ const register = async (data: RegisterFormType) => {
     apu_id: data.apuId,
     email: data.email,
     password: data.password,
-    role: data.role,
-    is_active: true,
   }
-
+  jsonLog(data)
   const response = await api.post(`/api/v1/auth/register`, payload);
   return response.data;
 };
@@ -29,5 +28,8 @@ export const registerMutationOptions = (): UseMutationOptions<
   },
   onError: (error) => {
     logApiErr(error);
+    if (axios.isAxiosError(error)) {
+      jsonLog(error.response?.data.detail)
+    }
   },
 });
