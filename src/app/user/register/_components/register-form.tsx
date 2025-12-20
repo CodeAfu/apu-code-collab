@@ -97,58 +97,61 @@ export default function RegisterForm() {
         <AnimatePresence>
           {showOptionalInfo && (
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
               transition={{
-                duration: 0.3
+                duration: 0.3,
+                ease: "easeInOut",
               }}
-              className="flex flex-col border border-border rounded-lg px-4 mb-4"
+              className="overflow-hidden"
             >
-              <p className="text-muted-foreground text-xs mt-4 italic mb-2">Optional</p>
-              <div className="flex sm:flex-row flex-col gap-4 w-full mb-2">
-                <div className="flex-1">
-                  <label className="text-sm" htmlFor="firstname-field">
-                    First Name:
-                  </label>
-                  <Input
-                    id="firstname-field"
-                    className="py-1 text-sm sm:text-base rounded"
-                    {...register("firstName")}
-                  />
-                  {errors.firstName && (
-                    <p className="text-red-500 text-xs">{errors.firstName.message}</p>
-                  )}
+              <div className="flex flex-col border border-border rounded-lg px-4 mb-4">
+                <p className="text-muted-foreground text-xs mt-4 italic mb-2">Optional</p>
+                <div className="flex sm:flex-row flex-col gap-4 w-full mb-2">
+                  <div className="flex-1">
+                    <label className="text-sm" htmlFor="firstname-field">
+                      First Name:
+                    </label>
+                    <Input
+                      id="firstname-field"
+                      className="py-1 text-sm sm:text-base rounded"
+                      {...register("firstName")}
+                    />
+                    {errors.firstName && (
+                      <p className="text-red-500 text-xs">{errors.firstName.message}</p>
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <label className="text-sm" htmlFor="lastname-field">
+                      Last Name:
+                    </label>
+                    <Input
+                      id="lastname-field"
+                      className="py-1 text-sm sm:text-base rounded"
+                      {...register("lastName")}
+                    />
+                    {errors.lastName && (
+                      <p className="text-red-500 text-xs">{errors.lastName.message}</p>
+                    )}
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <label className="text-sm" htmlFor="lastname-field">
-                    Last Name:
-                  </label>
-                  <Input
-                    id="lastname-field"
-                    className="py-1 text-sm sm:text-base rounded"
-                    {...register("lastName")}
-                  />
-                  {errors.lastName && (
-                    <p className="text-red-500 text-xs">{errors.lastName.message}</p>
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-col gap-2 mb-8">
-                <div>
-                  <label className="text-sm" htmlFor="email-field">
-                    Email:
-                  </label>
-                  <Input
-                    id="email-field"
-                    className="py-1 text-sm sm:text-base rounded"
-                    {...register("email")}
-                  />
-                  {errors.email && (
-                    <p className="text-red-500 text-xs">{errors.email.message}</p>
-                  )}
-                </div>
+                <div className="flex flex-col gap-2 mb-8">
+                  <div>
+                    <label className="text-sm" htmlFor="email-field">
+                      Email:
+                    </label>
+                    <Input
+                      id="email-field"
+                      className="py-1 text-sm sm:text-base rounded"
+                      {...register("email")}
+                    />
+                    {errors.email && (
+                      <p className="text-red-500 text-xs">{errors.email.message}</p>
+                    )}
+                  </div>
 
+                </div>
               </div>
             </motion.div>
           )}
