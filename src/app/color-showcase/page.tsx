@@ -127,7 +127,7 @@ export default function ColorShowcase() {
 
           <div className="relative">
             <div className="bg-muted p-4 rounded-lg">
-              <p className="text-sm">This is card content underneath</p>
+              <p className="text-sm text-muted-foreground">This is card content underneath</p>
             </div>
 
             <div className="absolute top-8 left-8 bg-popover text-popover-foreground p-4 rounded-lg border-2 border-border shadow-lg">

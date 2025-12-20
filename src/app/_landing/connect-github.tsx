@@ -1,6 +1,5 @@
-import React from "react";
-import ConnectGitHubButton from "./connect-github.button";
 import Card from "@/components/card";
+import ConnectGitHubButton from "./connect-github-button";
 
 export default function ConnectGithub() {
   return (

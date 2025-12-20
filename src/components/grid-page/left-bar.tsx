@@ -20,7 +20,7 @@ export default function LeftBar({
   return (
     <div
       ref={ref}
-      className={cn("h-full bg-sidebar overflow-y-scroll [direction:rtl]", className)}
+      className={cn("h-full bg-card overflow-y-scroll [direction:rtl]", className)}
       {...props}
     >
       {onClose && (

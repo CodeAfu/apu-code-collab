@@ -61,18 +61,18 @@ export const withAuth = <T extends unknown[], R>(func: (...args: T) => R) => {
   };
 };
 
-export const withRole = <T extends unknown[], R>(
-  allowedRoles: string[],
-  func: (...args: T) => R
-) => {
-  return withAuth(async (...args: T): Promise<R> => {
-    const token = useGetAuthToken();
-    const decoded = jwtDecode<DecodedToken>(token!.access_token);
-
-    if (!allowedRoles.includes(decoded.role)) {
-      throw Error("Insufficient permissions");
-    }
-
-    return func(...args);
-  });
-};
+// export const withRole = <T extends unknown[], R>(
+//   allowedRoles: string[],
+//   func: (...args: T) => R
+// ) => {
+//   return withAuth(async (...args: T): Promise<R> => {
+//     const token = useGetAuthToken();
+//     const decoded = jwtDecode<DecodedToken>(token!.access_token);
+//
+//     if (!allowedRoles.includes(decoded.role)) {
+//       throw Error("Insufficient permissions");
+//     }
+//
+//     return func(...args);
+//   });
+// };
