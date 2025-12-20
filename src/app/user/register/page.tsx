@@ -1,7 +1,6 @@
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import RegisterForm from "./_components/register-form";
 import LoadingSpinner from "@/components/loading-spinner";
-import Card from "@/components/card";
 
 export default function RegisterPage() {
   return (

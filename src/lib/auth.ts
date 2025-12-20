@@ -26,7 +26,7 @@ export const refreshAccessToken = async (): Promise<string> => {
       { withCredentials: true },
     );
     const newAccessToken = response.data.accessToken;
-    localStorage.setItem("accessToken", newAccessToken);
+    localStorage.setItem("access_token", newAccessToken);
     return newAccessToken;
   } catch (error) {
     console.error("Refresh token failed:", error);
@@ -42,7 +42,7 @@ export const withAuth = <T extends unknown[], R>(
       throw Error("'withAuth()' must be used within a client component.");
     }
 
-    let token = localStorage.getItem("accessToken");
+    let token = localStorage.getItem("access_token");
 
     // Token exists and not expired
     if (token) {
@@ -65,7 +65,7 @@ export const withAuth = <T extends unknown[], R>(
     try {
       token = await refreshAccessToken();
     } catch {
-      localStorage.removeItem("accessToken");
+      localStorage.removeItem("access_token");
       // window.location.href = "/auth/login";
       throw new Error("Session expired. Please login again");
     }
