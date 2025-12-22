@@ -2,9 +2,12 @@ import { RegisterFormType } from "./types";
 import { UseMutationOptions } from "@tanstack/react-query";
 import { jsonLog, logApiErr } from "@/lib/utils";
 import api from "@/lib/api";
-import axios, { AxiosError } from "axios";
+// import axios from "axios";
 
 const register = async (data: RegisterFormType) => {
+  if (data.password !== data.rePassword) {
+    throw new Error("Passwords do not match");
+  }
   const payload = {
     first_name: data.firstName,
     last_name: data.lastName,
@@ -28,8 +31,5 @@ export const registerMutationOptions = (): UseMutationOptions<
   },
   onError: (error) => {
     logApiErr(error);
-    if (axios.isAxiosError(error)) {
-      jsonLog(error.response?.data.detail)
-    }
   },
 });

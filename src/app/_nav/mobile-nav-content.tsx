@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { Fragment, HTMLAttributes } from "react";
+import { Fragment, HTMLAttributes } from "react";
 import { createPortal } from "react-dom";
 import { NavRoute } from "./types";
 import useMounted from "@/hooks/use-mounted";

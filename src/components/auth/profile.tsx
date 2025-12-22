@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Dropdown from "@/components/dropdown/dropdown";
 import Avatar from "@/components/avatar";
 import AccountItem from "./profile-item";
@@ -11,7 +10,7 @@ import { useClearAuthToken } from "@/stores/auth-store";
 
 export default function Profile() {
   const menus = useProfileMenu();
-  const logOut = useClearAuthToken();
+  const logoutHandler = useClearAuthToken();
   return (
     <div className="flex items-center justify-center">
       <Dropdown triggerNode={<Avatar src="/assets/user.svg" alt="avatar" />}>
@@ -26,7 +25,7 @@ export default function Profile() {
             item={{
               type: "button",
               icon: <LogOut />,
-              onClick: () => logOut(),
+              onClick: () => logoutHandler(),
               label: "Sign out",
             }}
           />

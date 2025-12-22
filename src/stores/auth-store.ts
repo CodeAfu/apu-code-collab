@@ -17,13 +17,13 @@ const useAuthStore = create<AuthState>()(
     }),
     {
       name: "auth-token",
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );
 
 export const useSetAuthToken = () => useAuthStore((store) => store.setToken);
 export const useGetAuthToken = () => useAuthStore((store) => store.token);
-export const useClearAuthToken = () =>
-  useAuthStore((store) => store.clearToken);
+export const useClearAuthToken = () => useAuthStore((store) => store.clearToken);
+
 export default useAuthStore;

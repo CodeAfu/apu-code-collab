@@ -6,6 +6,7 @@ import Link from "next/link";
 import MobileNav from "./mobile-nav";
 import MobileGridLeftToggle from "@/components/grid-page/mobile-grid-left-toggle";
 import AuthComponents from "./auth-components";
+import AuthGuard from "@/components/auth/auth-guard";
 
 const routes: NavRoute[] = [
   {

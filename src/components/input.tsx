@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import React, { HTMLAttributes, HTMLInputTypeAttribute } from "react";
+import { HTMLAttributes, HTMLInputTypeAttribute } from "react";
 
 interface InputProps extends HTMLAttributes<HTMLInputElement> {
   placeholder?: string;

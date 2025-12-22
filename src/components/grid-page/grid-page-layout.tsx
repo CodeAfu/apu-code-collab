@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import React, { HTMLAttributes } from "react";
+import { HTMLAttributes } from "react";
 import LeftBar from "./left-bar";
 
 export default function GridPageLayout({

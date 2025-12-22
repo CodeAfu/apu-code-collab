@@ -1,14 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import React from "react";
-import Profile from "../../components/auth/profile";
 import { usePathname, useRouter } from "next/navigation";
-import { useIsLoggedIn } from "@/hooks/use-is-logged-in";
 import Link from "next/link";
+import Profile from "@/components/auth/profile";
+import { useUser } from "@/hooks/use-user";
 
 export default function AuthComponents() {
-  const loggedIn = useIsLoggedIn();
+  const { isAuthenticated, isLoading } = useUser();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -16,9 +15,11 @@ export default function AuthComponents() {
     router.push(`/user/login?redirectTo=${encodeURIComponent(pathname)}`);
   };
 
+  if (isLoading) return null;
+
   return (
     <>
-      {loggedIn ? (
+      {isAuthenticated ? (
         <Profile />
       ) : (
         <div className="flex items-center gap-2">
@@ -29,8 +30,7 @@ export default function AuthComponents() {
             </Link>
           </Button>
         </div >
-      )
-      }
+      )}
     </>
   );
 }

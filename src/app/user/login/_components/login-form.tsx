@@ -11,23 +11,22 @@ import { loginMutationOptions } from "@/app/user/login/query";
 import { loginSchema, LoginFormType } from "../types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import { useIsLoggedIn } from "@/hooks/use-is-logged-in";
-import { AuthError } from "@/types/auth";
+import { useUser } from "@/hooks/use-user";
 
 export default function LoginForm() {
-  const loggedIn = useIsLoggedIn();
+  const { isAuthenticated } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirectTo")
 
   useEffect(() => {
-    if (!loggedIn) return;
+    if (!isAuthenticated) return;
     if (redirectTo) {
       router.push(redirectTo);
     } else {
       router.back();
     }
-  }, [loggedIn, router, redirectTo]);
+  }, [isAuthenticated, router, redirectTo]);
 
   const {
     register,
@@ -42,21 +41,11 @@ export default function LoginForm() {
     mutate: handleLogin,
     isPending,
     isError,
-    error: queryError,
+    error: loginError,
   } = useMutation(loginMutationOptions(setToken));
 
   const onSubmit = (data: LoginFormType) => {
     handleLogin(data);
-  };
-
-  const getErrorMessage = () => {
-    if (
-      axios.isAxiosError<AuthError>(queryError) &&
-      queryError.response?.data?.detail
-    ) {
-      return queryError.response.data.detail.message;
-    }
-    return "Login failed";
   };
 
   return (
@@ -95,9 +84,13 @@ export default function LoginForm() {
         {isPending ? "Loading..." : "Login"}
       </Button>
       {isError && (
-        <p className="text-red-500 text-sm mt-2">
-          {getErrorMessage()}
-        </p>
+        <div className="text-red-500 text-sm mt-2 space-y-1">
+          {axios.isAxiosError(loginError) ? (
+            <p>{loginError.response?.data.detail.message}</p>
+          ) : (
+            <p>{loginError.message || 'An error occurred'}</p>
+          )}
+        </div>
       )}
     </form>
   );

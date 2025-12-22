@@ -1,9 +1,7 @@
 "use client";
 
-import { useIsLoggedIn } from "@/hooks/use-is-logged-in";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { RegisterFormType, registerSchema } from "../types";
 import { useMutation } from "@tanstack/react-query";
@@ -11,21 +9,20 @@ import { registerMutationOptions } from "../query";
 import { Input } from "@/components/input";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
-import { AuthError } from "@/types/auth";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Minus, Plus } from "lucide-react";
 
 export default function RegisterForm() {
   const [showOptionalInfo, setShowOptionalInfo] = useState(false);
-  const loggedIn = useIsLoggedIn();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/";
+  // const loggedIn = useIsLoggedIn();
+  // const router = useRouter();
+  // const searchParams = useSearchParams();
+  // const redirectTo = searchParams.get("redirectTo") || "/";
 
-  useEffect(() => {
-    if (loggedIn) router.push(redirectTo);
-  }, [loggedIn, router, redirectTo]);
+  // useEffect(() => {
+  //   if (loggedIn) router.push(redirectTo);
+  // }, [loggedIn, router, redirectTo]);
 
   const {
     register,
@@ -73,6 +70,21 @@ export default function RegisterForm() {
             id="password-field"
             className="py-1 text-sm sm:text-base rounded"
             {...register("password")}
+          />
+          {errors.password && (
+            <p className="text-red-500 text-xs">{errors.password.message}</p>
+          )}
+        </div>
+
+        <div>
+          <label className="text-sm" htmlFor="re-password-field">
+            Retype Your Password: <span className="text-destructive">*</span>
+          </label>
+          <Input
+            type="password"
+            id="re-password-field"
+            className="py-1 text-sm sm:text-base rounded"
+            {...register("rePassword")}
           />
           {errors.password && (
             <p className="text-red-500 text-xs">{errors.password.message}</p>
@@ -159,11 +171,13 @@ export default function RegisterForm() {
         <Button className="hover:cursor-pointer text-lg mt-4" size="lg" disabled={isPending} type="submit">
           Register
         </Button>
-        {isError && axios.isAxiosError<AuthError>(registerError) && Array.isArray(registerError.response?.data?.detail) && (
+        {isError && (
           <div className="text-red-500 text-sm mt-2 space-y-1">
-            {registerError.response.data.detail.map((err, i) => (
-              <p key={i}>{err.msg}</p>
-            ))}
+            {axios.isAxiosError(registerError) ? (
+              <p>{registerError.response?.data.detail.message}</p>
+            ) : (
+              <p>{registerError?.message || 'An error occurred'}</p>
+            )}
           </div>
         )}
       </form >

@@ -1,5 +1,7 @@
+import useAuthStore from "@/stores/auth-store";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { devLog, logApiErr } from "./utils";
 
 export interface TokenPayload {
   id: string;
@@ -17,21 +19,31 @@ export function decodeToken(token: string): TokenPayload | null {
   }
 }
 
+let refreshPromise: Promise<string> | null = null;
 export const refreshAccessToken = async (): Promise<string> => {
-  console.log("Calling refresh endpoint...");
-  try {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/refresh`,
-      {},
-      { withCredentials: true },
-    );
-    const newAccessToken = response.data.accessToken;
-    localStorage.setItem("access_token", newAccessToken);
-    return newAccessToken;
-  } catch (error) {
-    console.error("Refresh token failed:", error);
-    throw error;
+  if (refreshPromise) {
+    return refreshPromise;
   }
+  refreshPromise = (async () => {
+    try {
+      devLog("Calling refresh endpoint...");
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/refresh`,
+        {},
+        { withCredentials: true }
+      );
+      const newAccessToken = response.data.access_token;
+      useAuthStore.getState().setToken({ access_token: newAccessToken, token_type: "Bearer" });
+      devLog("Token refreshed successfully")
+      return newAccessToken;
+    } catch (error) {
+      logApiErr("Refresh Token Failed", error)
+      throw error;
+    } finally {
+      refreshPromise = null;
+    }
+  })();
+  return refreshPromise;
 };
 
 export const withAuth = <T extends unknown[], R>(
@@ -42,7 +54,7 @@ export const withAuth = <T extends unknown[], R>(
       throw Error("'withAuth()' must be used within a client component.");
     }
 
-    let token = localStorage.getItem("access_token");
+    let token = useAuthStore.getState().token?.access_token;
 
     // Token exists and not expired
     if (token) {
@@ -65,8 +77,7 @@ export const withAuth = <T extends unknown[], R>(
     try {
       token = await refreshAccessToken();
     } catch {
-      localStorage.removeItem("access_token");
-      // window.location.href = "/auth/login";
+      useAuthStore.getState().clearToken();
       throw new Error("Session expired. Please login again");
     }
 

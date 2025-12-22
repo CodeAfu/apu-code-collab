@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import React, { HTMLAttributes } from "react";
+import { HTMLAttributes } from "react";
 
 export default function LoadingSpinner({
   className,
@@ -8,7 +8,7 @@ export default function LoadingSpinner({
   return (
     <div
       className={cn(
-        "size-12 rounded-full border-4 border-muted border-b-accent animate-spin",
+        "size-12 rounded-full border-4 p-2 border-muted border-b-accent animate-spin",
         className
       )}
       {...props}

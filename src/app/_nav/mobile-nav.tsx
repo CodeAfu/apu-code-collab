@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
-import React, { Fragment, useState } from "react";
+import { Fragment, useState } from "react";
 import MobileNavContent from "./mobile-nav-content";
 import { NavRoute } from "./types";
 
