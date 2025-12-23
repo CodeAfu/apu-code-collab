@@ -10,8 +10,7 @@ export default function GridPageLayout({
   return (
     <div
       className={cn(
-        "sm:min-h-[calc(100dvh-4rem)] min-h-[calc(100dvh-3rem)]",
-        "grid md:grid-cols-[280px_1fr]",
+        "h-full grid md:grid-cols-[280px_1fr]",
         className
       )}
       {...props}

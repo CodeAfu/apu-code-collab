@@ -1,7 +1,7 @@
 import useAuthStore from "@/stores/auth-store";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { devLog, logApiErr } from "./utils";
+import { devLog, logApiError } from "./utils";
 
 export interface TokenPayload {
   id: string;
@@ -37,7 +37,7 @@ export const refreshAccessToken = async (): Promise<string> => {
       devLog("Token refreshed successfully")
       return newAccessToken;
     } catch (error) {
-      logApiErr("Refresh Token Failed", error)
+      logApiError("Refresh Token Failed", error)
       throw error;
     } finally {
       refreshPromise = null;
@@ -59,7 +59,6 @@ export const withAuth = <T extends unknown[], R>(
     // Token exists and not expired
     if (token) {
       const decoded = decodeToken(token);
-      // console.log(decoded);
       if (decoded) {
         const now = Math.floor(Date.now() / 1000);
         const expTimestamp =

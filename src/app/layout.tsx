@@ -36,7 +36,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "antialiased",
+          "antialiased min-h-[125dvh] grid grid-rows-[auto_1fr_auto]",
           archivo.variable,
           jetbrainsMono.variable,
           archivo.className

@@ -1,8 +1,7 @@
 import { RegisterFormType } from "./types";
 import { UseMutationOptions } from "@tanstack/react-query";
-import { jsonLog, logApiErr } from "@/lib/utils";
+import { devLog, jsonLog, logApiError } from "@/lib/utils";
 import api from "@/lib/api";
-// import axios from "axios";
 
 const register = async (data: RegisterFormType) => {
   if (data.password !== data.rePassword) {
@@ -27,9 +26,9 @@ export const registerMutationOptions = (): UseMutationOptions<
 > => ({
   mutationFn: register,
   onSuccess: (data) => {
-    console.log("User registered:", data);
+    devLog("User registered:", data);
   },
   onError: (error) => {
-    logApiErr(error);
+    logApiError(error);
   },
 });

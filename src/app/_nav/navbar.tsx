@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import { NavRoute } from "./types";
 import Nav from "./nav";
 import Image from "next/image";
@@ -6,7 +6,6 @@ import Link from "next/link";
 import MobileNav from "./mobile-nav";
 import MobileGridLeftToggle from "@/components/grid-page/mobile-grid-left-toggle";
 import AuthComponents from "./auth-components";
-import AuthGuard from "@/components/auth/auth-guard";
 
 const routes: NavRoute[] = [
   {

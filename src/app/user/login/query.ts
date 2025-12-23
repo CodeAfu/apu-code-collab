@@ -3,7 +3,7 @@ import { LoginFormType, LoginResponse } from "@/app/user/login/types";
 import { API_BASE_URL } from "@/lib/consts";
 import { Token } from "@/types/auth";
 import { mutationOptions } from "@tanstack/react-query";
-import { jsonLog, logApiErr } from "@/lib/utils";
+import { jsonLog, logApiError } from "@/lib/utils";
 
 const login = async (data: LoginFormType): Promise<LoginResponse> => {
   const response = await axios.post(
@@ -30,7 +30,7 @@ export const loginMutationOptions = (
   onError: (error) => {
     if (axios.isAxiosError(error)) {
       jsonLog(error.response?.data.detail)
-      logApiErr(error);
+      logApiError(error);
     }
   },
 });
