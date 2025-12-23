@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import React, { HTMLAttributes, RefObject } from "react";
+import { HTMLAttributes, RefObject } from "react";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
 

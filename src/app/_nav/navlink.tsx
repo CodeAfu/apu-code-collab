@@ -32,8 +32,8 @@ export default function NavLink({
         href={href}
         className={cn(
           "h-full px-2 w-full text-lg text-sidebar-foreground flex items-center justify-center transition duration-100",
-          "hover:text-primary active:bg-primary/5 active:text-primary",
-          isActive ? "border-b border-primary font-semibold" : "",
+          "hover:text-accent active:bg-accent/10 active:text-accent",
+          isActive ? "border-b border-accent font-semibold" : "",
           className
         )}
         {...props}

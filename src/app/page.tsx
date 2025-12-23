@@ -1,9 +1,12 @@
-import ConnectGithub from "./_landing/connect-github";
 
-export default function Home() {
+export default function HomePage() {
+  // Introduce the user to the app
+  // Direct user through this flow
+  // 1. Login to website with TP number
+  // 2. Connect GitHub account
   return (
-    <main className="flex flex-col items-center justify-center sm:my-0 mt-24 my-60 sm:min-h-[calc(100dvh-4rem)] py-4 px-4">
-      <ConnectGithub />
-    </main>
+    <div className="container flex flex-col mx-auto">
+      <div>Home</div>
+    </div>
   );
 }

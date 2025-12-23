@@ -32,7 +32,7 @@ export function devOut<T>(inputs: T): T | undefined {
   if (process.env.NODE_ENV === "development") return inputs;
 }
 
-export function logApiErr(...args: unknown[]): void {
+export function logApiError(...args: unknown[]): void {
   if (process.env.NODE_ENV !== "development") return;
 
   if (args.length === 0) return;

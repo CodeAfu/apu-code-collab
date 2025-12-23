@@ -2,30 +2,41 @@
 
 import Dropdown from "@/components/dropdown/dropdown";
 import Avatar from "@/components/avatar";
-import AccountItem from "./profile-item";
+import ProfileItem from "./profile-item";
 import { useProfileMenu } from "@/hooks/use-profile-menu";
-import { generateRandomNodeKey } from "@/lib/utils";
+import { generateRandomNodeKey, logApiError } from "@/lib/utils";
 import { LogOut } from "lucide-react";
 import { useClearAuthToken } from "@/stores/auth-store";
+import api from "@/lib/api";
 
 export default function Profile() {
   const menus = useProfileMenu();
-  const logoutHandler = useClearAuthToken();
+  const cleartAuthToken = useClearAuthToken();
+
+  const handleLogout = async () => {
+    try {
+      await api.post("/api/v1/auth/logout");
+      cleartAuthToken();
+    } catch (error) {
+      logApiError(error);
+    }
+  }
+
   return (
     <div className="flex items-center justify-center">
       <Dropdown triggerNode={<Avatar src="/assets/user.svg" alt="avatar" />}>
         <div className="flex flex-col rounded bg-card w-80">
           {menus.map((item, index) => (
-            <AccountItem
+            <ProfileItem
               key={generateRandomNodeKey(`profile-item-${index}`)}
               item={item}
             />
           ))}
-          <AccountItem
+          <ProfileItem
             item={{
               type: "button",
               icon: <LogOut />,
-              onClick: () => logoutHandler(),
+              onClick: () => handleLogout(),
               label: "Sign out",
             }}
           />

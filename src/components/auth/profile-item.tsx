@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import React, { HTMLAttributes } from "react";
+import { HTMLAttributes } from "react";
 import { ProfileItemType } from "@/lib/types";
 
 interface ProfileItemProps

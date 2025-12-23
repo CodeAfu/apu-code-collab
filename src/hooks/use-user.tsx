@@ -1,6 +1,9 @@
+import api from "@/lib/api";
 import { decodeToken, refreshAccessToken } from "@/lib/auth";
-import { devLog } from "@/lib/utils";
+import { devLog, logApiError } from "@/lib/utils";
 import useAuthStore from "@/stores/auth-store";
+import { UserDetails } from "@/types/user";
+import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState, useEffect } from "react";
 
 export const useUser = () => {
@@ -45,11 +48,32 @@ export const useUser = () => {
 
   // devLog("Access Token:", token)
 
+  const { data: userDetails, isFetching: isFetchingUserDetails, isError, error } = useQuery<UserDetails>({
+    queryKey: ["users", "me"],
+    queryFn: async () => {
+      const response = await api.get("/api/v1/users/me");
+      devLog("users/me", response.data);
+      return response.data;
+    },
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+    enabled: isAuthenticated,
+  })
+
+  if (isError) {
+    logApiError(error);
+  }
+
   return {
     user,
     isAuthenticated,
     isRole: (role: string) => user?.role === role,
     logout: clearToken,
     isLoading: !isHydrated || isRefreshing || isTokenInvalidButPresent,
+
+    userDetails,
+    isFetchingUserDetails,
+    isError,
+    error,
   };
 };

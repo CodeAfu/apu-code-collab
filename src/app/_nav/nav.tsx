@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { NavRoute } from "./types";
 import NavLink from "./navlink";
 

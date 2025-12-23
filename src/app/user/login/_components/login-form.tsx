@@ -5,7 +5,7 @@ import { Input } from "@/components/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSetAuthToken } from "@/stores/auth-store";
 import { loginMutationOptions } from "@/app/user/login/query";
 import { loginSchema, LoginFormType } from "../types";
@@ -15,6 +15,7 @@ import { useUser } from "@/hooks/use-user";
 
 export default function LoginForm() {
   const { isAuthenticated } = useUser();
+  const queryClient = useQueryClient();
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirectTo")
@@ -46,6 +47,7 @@ export default function LoginForm() {
 
   const onSubmit = (data: LoginFormType) => {
     handleLogin(data);
+    queryClient.invalidateQueries({ queryKey: ["users", "me"] });
   };
 
   return (

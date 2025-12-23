@@ -1,8 +1,7 @@
-import React from "react";
 
 export default function GuidesPage() {
   return (
-    <div className="min-h-screen">
+    <div>
       <div>Guides</div>
     </div>
   );
