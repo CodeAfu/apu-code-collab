@@ -12,17 +12,11 @@ import axios from "axios";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Minus, Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
   const [showOptionalInfo, setShowOptionalInfo] = useState(false);
-  // const loggedIn = useIsLoggedIn();
-  // const router = useRouter();
-  // const searchParams = useSearchParams();
-  // const redirectTo = searchParams.get("redirectTo") || "/";
-
-  // useEffect(() => {
-  //   if (loggedIn) router.push(redirectTo);
-  // }, [loggedIn, router, redirectTo]);
+  const router = useRouter();
 
   const {
     register,
@@ -37,7 +31,7 @@ export default function RegisterForm() {
     isPending,
     isError,
     error: registerError,
-  } = useMutation(registerMutationOptions());
+  } = useMutation(registerMutationOptions(router));
 
   const onSubmit = (data: RegisterFormType) => {
     handleRegister(data);

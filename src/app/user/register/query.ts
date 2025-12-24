@@ -1,6 +1,7 @@
 import { RegisterFormType } from "./types";
 import { UseMutationOptions } from "@tanstack/react-query";
 import { devLog, jsonLog, logApiError } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 
 const register = async (data: RegisterFormType) => {
@@ -19,7 +20,8 @@ const register = async (data: RegisterFormType) => {
   return response.data;
 };
 
-export const registerMutationOptions = (): UseMutationOptions<
+type AppRouterInstance = ReturnType<typeof useRouter>;
+export const registerMutationOptions = (router: AppRouterInstance): UseMutationOptions<
   boolean,
   Error,
   RegisterFormType
@@ -27,6 +29,7 @@ export const registerMutationOptions = (): UseMutationOptions<
   mutationFn: register,
   onSuccess: (data) => {
     devLog("User registered:", data);
+    router.push("/user/login")
   },
   onError: (error) => {
     logApiError(error);

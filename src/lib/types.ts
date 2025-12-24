@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { ReactNode } from "react";
 
 export interface ProfileItemLink {
@@ -23,3 +24,4 @@ export type ProfileItemType =
   | ProfileItemButton
   | ProfileItemSeparator;
 
+export type BackendError = AxiosError<{ detail: string }>

@@ -12,11 +12,11 @@ interface AuthGuardProps {
   allowedRoles?: string[];
   requireUserDetails?: boolean;
   requireGitHubAccessToken?: boolean;
-  customFallback?: React.ReactNode;
+  fallback?: React.ReactNode;
 }
 
-export default function AuthGuard({ children, withLoadingSpinner, allowedRoles, requireUserDetails, requireGitHubAccessToken, customFallback }: AuthGuardProps) {
-  const { isAuthenticated, isLoading, user, userDetails } = useUser();
+export default function AuthGuard({ children, withLoadingSpinner, allowedRoles, requireUserDetails, requireGitHubAccessToken, fallback }: AuthGuardProps) {
+  const { isAuthenticated, isLoading, decodedUserToken: user, userDetails } = useUser();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -42,13 +42,16 @@ export default function AuthGuard({ children, withLoadingSpinner, allowedRoles, 
   }, [isLoading, isAuthenticated, isWaitingForData, isMissingGithub, isRoleMismatch, router, pathname, userDetails]);
 
   if (isLoading || !isAuthenticated || isWaitingForData || isMissingGithub || isRoleMismatch) {
-    if (!withLoadingSpinner) return null;
-    if (customFallback) return customFallback;
-    return (
-      <div className="flex-1 flex items-center justify-center w-full h-full">
-        <LoadingSpinner />
-      </div>
-    );
+    if (fallback) return <>{fallback}</>;
+    if (withLoadingSpinner) {
+      return (
+        <div className="flex-1 flex items-center justify-center w-full h-full">
+          <LoadingSpinner />
+        </div>
+      );
+    }
+
+    return null;
   }
 
   if (allowedRoles && !allowedRoles.includes(user?.role || "")) {

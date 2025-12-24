@@ -37,7 +37,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between gap-4 w-full h-full">
           <div className="flex items-center gap-2 h-full">
             <MobileGridLeftToggle />
-            <div className="dark:bg-white/75 flex items-center sm:size-10 size-8 mr-4">
+            <div className="dark:bg-white/75 flex items-center sm:size-10 size-8 mr-4 hover:scale-105 transition-transform duration-200">
               <Link href="/">
                 <Image
                   src="/assets/apu-logo.svg"

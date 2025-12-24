@@ -19,9 +19,6 @@ export interface UserDetails {
 }
 
 
-
-
-
 // export const UserRoleEnum = z.enum(["student", "teacher", "admin"]);
 // export type UserRole = z.infer<typeof UserRoleEnum>;
 //
