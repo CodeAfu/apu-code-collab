@@ -15,7 +15,7 @@ export const useUser = () => {
 
   useEffect(() => setIsHydrated(true), []);
 
-  const user = useMemo(() => {
+  const decodedUserToken = useMemo(() => {
     if (!isHydrated || !token) return null;
     const decoded = decodeToken(token);
     if (!decoded) return null;
@@ -25,7 +25,7 @@ export const useUser = () => {
     return decoded;
   }, [token, isHydrated]);
 
-  const isAuthenticated = !!user;
+  const isAuthenticated = !!decodedUserToken;
   const isTokenInvalidButPresent = !!token && !isAuthenticated;
 
   useEffect(() => {
@@ -65,9 +65,9 @@ export const useUser = () => {
   }
 
   return {
-    user,
+    decodedUserToken,
     isAuthenticated,
-    isRole: (role: string) => user?.role === role,
+    isRole: (role: string) => decodedUserToken?.role === role,
     logout: clearToken,
     isLoading: !isHydrated || isRefreshing || isTokenInvalidButPresent,
 

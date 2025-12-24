@@ -25,6 +25,16 @@
   }
 }
 
+@keyframes shimmer {
+  0% {
+    transform: translate(-100%, -100%);
+  }
+
+  100% {
+    transform: translate(200%, 200%);
+  }
+}
+
 :root {
   --background: oklch(0.92 0 0);
   --foreground: oklch(0.05 0 250.5167);
@@ -97,13 +107,13 @@
   --card-foreground: oklch(0.9189 0.0254 249.9602);
   --popover: oklch(0.25 0 0);
   --popover-foreground: oklch(0.9189 0.0254 249.9602);
-  --primary: oklch(0.35 0.1493 249.6419);
+  --primary: oklch(0.45 0.1493 249.6419);
   --primary-foreground: oklch(0.85014 0.00268 230.187);
   --secondary: oklch(0.35 0.16 185);
   --secondary-foreground: oklch(0.9189 0.0254 249.9602);
   --muted: oklch(0.25 0 250.0911);
   --muted-foreground: oklch(0.45 0.006 250.5561);
-  --accent: oklch(0.5 0.18599 249.024);
+  --accent: oklch(0.65 0.180 259.024);
   --accent-foreground: oklch(0.85014 0.00268 230.187);
   --destructive: oklch(0.6861 0.2061 14.9941);
   --destructive-foreground: oklch(1 0 0);
@@ -202,6 +212,8 @@
 
   --animate-slide-up: slideUp 200ms ease-in forwards;
   --animate-fade-in: fadeIn 150ms ease-in forwards;
+  --animate-custom-pulse: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-shimmer: shimmer 2.5s infinite;
 }
 
 @layer base {

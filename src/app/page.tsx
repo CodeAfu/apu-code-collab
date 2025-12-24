@@ -1,12 +1,25 @@
+"use client";
+
+import { useUser } from "@/hooks/use-user";
+import LandingView from "./_dashboard/_components/landing-view";
+import DashboardView from "./_dashboard/_components/dashboard-view";
+import LoadingSpinner from "@/components/loading-spinner";
+import AuthGuard from "@/components/auth/auth-guard";
 
 export default function HomePage() {
-  // Introduce the user to the app
-  // Direct user through this flow
-  // 1. Login to website with TP number
-  // 2. Connect GitHub account
+  const { isAuthenticated, userDetails, isLoading } = useUser();
+
+  if (isLoading) {
+    return <div className="flex flex-col items-center justify-center"><LoadingSpinner /></div>;
+  }
+
+  if (!isAuthenticated) {
+    return <LandingView />;
+  }
+
   return (
-    <div className="container flex flex-col mx-auto">
-      <div>Home</div>
-    </div>
+    <AuthGuard requireGitHubAccessToken withLoadingSpinner>
+      <DashboardView user={userDetails} />
+    </AuthGuard>
   );
 }
