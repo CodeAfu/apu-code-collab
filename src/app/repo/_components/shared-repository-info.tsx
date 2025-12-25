@@ -53,7 +53,7 @@ export default function SharedRepositoryInfo() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col max-w-5xl mx-auto w-full border border-border rounded shadow bg-card sm:p-8 p-4 gap-6">
       {/* Header */}
       <div className="flex items-start gap-4">
         <Code2 className="w-10 h-10 text-muted-foreground flex-shrink-0 mt-1" />

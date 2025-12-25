@@ -41,7 +41,7 @@ function ErrorFallback({ error }: { error: Error }) {
 export default function RepoPage() {
   return (
     <main className="container mx-auto sm:my-8 my-4">
-      <div className="flex flex-col rounded shadow sm:p-8 p-4">
+      <div className="flex flex-col sm:p-8 p-4">
         <ErrorBoundary FallbackComponent={ErrorFallback}>
           <Suspense fallback={<RepoPageSkeleton />}>
             <SharedRepositoryInfo />
