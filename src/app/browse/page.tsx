@@ -1,6 +1,7 @@
 import GridPageLayout from "@/components/grid-page/grid-page-layout";
 import AuthGuard from "@/components/auth/auth-guard";
 import BrowseContents from "./_components/browse-contents";
+import { Suspense } from "react";
 
 export default function BrowsePage() {
   return (
@@ -9,8 +10,9 @@ export default function BrowsePage() {
         <GridPageLayout>
           <div className="max-w-7xl mx-auto px-4 py-8">
             <div className="flex flex-col gap-4">
-              <BrowseContents />
-
+              <Suspense>
+                <BrowseContents />
+              </Suspense>
             </div>
           </div>
         </GridPageLayout>

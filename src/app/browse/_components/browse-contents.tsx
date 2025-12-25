@@ -7,12 +7,16 @@ import api from "@/lib/api";
 import { BackendError } from "@/lib/types";
 import { devLog } from "@/lib/utils";
 import Skeleton from "@/components/skeleton";
+// import { useSearchParams } from "next/navigation";
 
 export default function BrowseContents() {
+  // const searchParams = useSearchParams();
+
   const { data: repositories, error, isError, isFetching } = useQuery({
-    queryKey: ["github", "shared-repos"],
+    queryKey: ["github", "repos"],
     queryFn: async () => {
-      const response = await api.get("/api/v1/github/shared-repos");
+      const params = new URLSearchParams();
+      const response = await api.get(`/api/v1/github/repos?${params.toString()}`);
       return response.data;
     },
   });

@@ -21,7 +21,7 @@ export default function RepositoryCard({ repository }: RepositoryCardProps) {
         <div className="flex items-center gap-2 flex-1 min-w-0">
           <Code2 className="w-5 h-5 text-muted-foreground flex-shrink-0" />
           <a
-            href={repository.html_url}
+            href={`/repo?repositoryName=${repository.name}&githubUsername=${repository.owner.login}`}
             className="text-lg inline-flex items-center gap-2 font-semibold popover-foreground group group-hover:text-accent hover:text-accent hover:underline truncate transition duration-200"
           >
             {repository.name}
@@ -81,7 +81,7 @@ export default function RepositoryCard({ repository }: RepositoryCardProps) {
         )}
       </div>
 
-      <div className="flex items-center justify-between text-xs text-foreground-subtle pt-3 border-t border-gray-100">
+      <div className="flex items-center justify-between text-xs text-foreground-subtle pt-3 border-t border-muted-foreground/20">
         <div className="flex items-center gap-1">
           <Calendar className="w-3 h-3" />
           <span>Updated {formatDate(repository.updated_at)}</span>
