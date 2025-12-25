@@ -1,7 +1,7 @@
-import { Github } from "lucide-react";
 import Link from "next/link";
 import ParticlesBackground from "./particles-background";
 import { motion } from "motion/react";
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
 
 export default function LandingView() {
   return (
@@ -13,7 +13,7 @@ export default function LandingView() {
             <h1 className="text-4xl font-extrabold tracking-tight lg:text-6xl">
               APU <span className="text-primary">Code Collab</span>
             </h1>
-            <p className="text-xl text-foreground/60 max-w-lg mx-auto">
+            <p className="text-xl text-foreground-subtle max-w-lg mx-auto">
               Connect your GitHub, find study partners, and showcase your best academic projects.
             </p>
           </div>
@@ -24,7 +24,7 @@ export default function LandingView() {
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
               className="group relative mt-4 h-14 sm:h-16 px-8 sm:px-12 bg-primary text-primary-foreground text-lg font-bold rounded-xl shadow-lg flex items-center justify-center gap-3 mx-auto overflow-hidden hover:cursor-pointer"
             >
-              <Github className="h-6 w-6 transition-transform group-hover:-rotate-12" />
+              <GitHubLogoIcon className="h-6 w-6 transition-transform group-hover:scale-105 duration-200 " />
               <span>Get Started with APU ID</span>
             </motion.button>
           </Link>

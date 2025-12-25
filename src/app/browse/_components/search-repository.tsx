@@ -1,6 +1,5 @@
 import { Input } from "@/components/input";
 import { Search } from "lucide-react";
-import React from "react";
 
 export default function SearchRepository() {
   return (

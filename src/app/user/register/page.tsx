@@ -4,10 +4,7 @@ import LoadingSpinner from "@/components/loading-spinner";
 
 export default function RegisterPage() {
   return (
-    <div
-      className="sm:min-h-[calc(100dvh-4rem)] min-h-[calc(100dvh-3rem)] px-4
-                    flex flex-col items-center justify-center"
-    >
+    <div className="min-h-[80vh] px-4 flex flex-col items-center justify-center">
       <Suspense fallback={<Loading />}>
         <RegisterForm />
       </Suspense>
