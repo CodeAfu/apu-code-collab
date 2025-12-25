@@ -13,7 +13,7 @@ export default function LandingView() {
             <h1 className="text-4xl font-extrabold tracking-tight lg:text-6xl">
               APU <span className="text-primary">Code Collab</span>
             </h1>
-            <p className="text-xl text-foreground/60 max-w-lg mx-auto">
+            <p className="text-xl text-foreground-subtle max-w-lg mx-auto">
               Connect your GitHub, find study partners, and showcase your best academic projects.
             </p>
           </div>

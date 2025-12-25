@@ -36,8 +36,8 @@ export default function MobileNavContent({
       <nav
         data-sidenav-content
         className={cn(
-          "fixed right-0 top-0 z-100 w-64 h-screen bg-sidebar shadow-lg",
-          "overflow-y-scroll transition-transform duration-200 ease-in-out",
+          "fixed right-0 top-0 z-100 w-64 h-screen bg-card shadow-lg",
+          "transition-transform duration-200 ease-in-out",
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
