@@ -112,3 +112,4 @@ export interface GitHubRepository {
 export interface GitHubRepositoriesResponse {
   items: GitHubRepository[];
 };
+

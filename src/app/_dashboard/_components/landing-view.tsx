@@ -1,12 +1,13 @@
 import Link from "next/link";
-import ParticlesBackground from "./particles-background";
 import { motion } from "motion/react";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 
 export default function LandingView() {
   return (
     <div className="relative overflow-hidden w-full">
-      <ParticlesBackground />
+      {/*
+        <ParticlesBackground />
+      */}
       <div className="container mx-auto flex flex-col items-center justify-center min-h-[80vh] py-12 gap-8 text-center">
         <div className="space-y-4 max-w-2xl sm:p-16 p-8 rounded bg-muted/50 shadow">
           <div className="space-y-4 mb-8 max-w-2xl">

@@ -46,8 +46,6 @@ export const useUser = () => {
     }
   }, [isAuthenticated, isHydrated, token, clearToken])
 
-  // devLog("Access Token:", token)
-
   const { data: userDetails, isFetching: isFetchingUserDetails, isError, error } = useQuery<UserDetails>({
     queryKey: ["users", "me"],
     queryFn: async () => {
@@ -63,6 +61,9 @@ export const useUser = () => {
   if (isError) {
     logApiError(error);
   }
+
+  // devLog("Decoded User Token:", decodedUserToken);
+  // devLog("User Details:", userDetails);
 
   return {
     decodedUserToken,

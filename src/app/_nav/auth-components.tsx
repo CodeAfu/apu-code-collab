@@ -23,8 +23,8 @@ export default function AuthComponents() {
         <Profile />
       ) : (
         <div className="flex items-center gap-2">
-          <Button className="hover:cursor-pointer" onClick={handleRouter}>Login</Button>
-          <Button asChild>
+          <Button size="lg" variant="ghost" className="px-4 font-semibold hover:cursor-pointer hover:bg-accent dark:hover:bg-accent rounded-full" onClick={handleRouter}>Login</Button>
+          <Button size="lg" variant="outline" className="px-4 font-semibold hover:cursor-pointer hover:bg-primary dark:hover:bg-accent rounded-full" asChild>
             <Link href="/user/register">
               Register
             </Link>

@@ -7,18 +7,21 @@ import Skeleton from "@/components/skeleton";
 
 function LoadingSkeleton() {
   return (
-    <Card className="p-6">
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-3">
-          <Skeleton className="w-10 h-10 rounded-full" />
-          <div className="flex flex-col gap-2">
-            <Skeleton className="w-32 h-4 rounded" />
-            <Skeleton className="w-24 h-3 rounded" />
+    <div className="flex flex-col gap-4">
+      <Skeleton className="h-12 rounded" />
+      <Card className="p-6">
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-3">
+            <Skeleton className="w-10 h-10 rounded-full" />
+            <div className="flex flex-col gap-2">
+              <Skeleton className="w-32 h-4 rounded" />
+              <Skeleton className="w-24 h-3 rounded" />
+            </div>
           </div>
+          <Skeleton className="w-full h-12 rounded" />
         </div>
-        <Skeleton className="w-full h-12 rounded" />
-      </div>
-    </Card>
+      </Card>
+    </div>
   )
 }
 
