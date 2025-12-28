@@ -1,15 +1,15 @@
 "use client";
 
-import Card from "@/components/card";
 import SearchRepository from "./search-repository";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { BackendError } from "@/lib/types";
-import { devLog } from "@/lib/utils";
+import { devLog, jsonLog } from "@/lib/utils";
 import Skeleton from "@/components/skeleton";
-import { GitHubRepository } from "@/types/github";
-import { Link, Star, GitFork, User } from "lucide-react";
+import { Star, GitFork, User } from "lucide-react";
+import Link from "next/link";
 import React from "react";
+import Card from "@/components/card";
 // import { useSearchParams } from "next/navigation";
 
 function LoadingSkeleton() {
@@ -29,8 +29,26 @@ function LoadingSkeleton() {
   )
 }
 
+interface GitHubItemType {
+  id: string;
+  db_owner: string;
+  name: string;
+  description: string;
+  stargazer_count: number;
+  fork_count: number;
+  url: string;
+  owner: {
+    login: string;
+    avatar_url: string;
+  };
+  collaborators: {
+    login: string;
+    avatar_url: string;
+  }[];
+}
+
 interface PaginationResponse {
-  items: GitHubRepository[];
+  items: GitHubItemType[];
   next_cursor: string | null;
 }
 
@@ -59,6 +77,7 @@ export default function BrowseContents() {
 
   if (data) {
     devLog("Shared repos:", data);
+    jsonLog("Repo", data.pages[0].items[0])
   }
 
   const isEmpty = !data?.pages[0]?.items.length;
@@ -73,7 +92,7 @@ export default function BrowseContents() {
             <LoadingSkeleton key={i} />
           ))
         ) : isEmpty ? (
-          <Card className="p-12 text-center text-muted-foreground">
+          <Card className="p-12 border border-border text-center text-muted-foreground">
             No repositories found. Why not share one?
           </Card>
         ) : (
@@ -87,7 +106,7 @@ export default function BrowseContents() {
                     href={`/repo?githubUsername=${repo.owner.login}&repositoryName=${repo.name}`}
                     className="block group"
                   >
-                    <Card className="p-6 transition-colors hover:border-primary/50">
+                    <Card className="p-6 border border-border transition-colors hover:border-primary/50">
                       <div className="flex flex-col gap-3">
                         {/* Header: Owner & Name */}
                         <div className="flex items-start justify-between">
@@ -96,7 +115,7 @@ export default function BrowseContents() {
                             <img
                               src={repo.owner.avatar_url}
                               alt={repo.owner.login}
-                              className="w-8 h-8 rounded-full border border-border"
+                              className="w-8 h-8 text-xs rounded-full border border-border"
                             />
                             <div>
                               <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
@@ -111,10 +130,10 @@ export default function BrowseContents() {
                           {/* Badges / Stats */}
                           <div className="flex items-center gap-3 text-sm text-muted-foreground">
                             <span className="flex items-center gap-1">
-                              <Star className="w-4 h-4" /> {repo.stargazers_count}
+                              <Star className="w-4 h-4" /> {repo.stargazer_count}
                             </span>
                             <span className="flex items-center gap-1">
-                              <GitFork className="w-4 h-4" /> {repo.forks_count}
+                              <GitFork className="w-4 h-4" /> {repo.fork_count}
                             </span>
                           </div>
                         </div>

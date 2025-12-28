@@ -62,8 +62,8 @@ export const useUser = () => {
     logApiError(error);
   }
 
-  devLog("Decoded User Token:", decodedUserToken);
-  devLog("User Details:", userDetails);
+  // devLog("Decoded User Token:", decodedUserToken);
+  // devLog("User Details:", userDetails);
 
   return {
     decodedUserToken,

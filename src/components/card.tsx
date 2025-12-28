@@ -9,7 +9,7 @@ export default function Card({
   return (
     <div
       className={cn(
-        "bg-card text-card-foreground px-8 sm:px-16 py-8 shadow-lg rounded-lg",
+        "bg-card text-card-foreground px-8 py-8 shadow-lg rounded-lg",
         className
       )}
       {...props}
