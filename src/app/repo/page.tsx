@@ -28,7 +28,7 @@ function RepoPageSkeleton() {
         <div className="grid sm:grid-cols-4 grid-cols-2 gap-4">
           <Skeleton className="w-full max-w-xl h-18 rounded-xl" />
           <Skeleton className="w-full max-w-xl h-18 rounded-xl" />
-          <Skeleton className="w-full max-w-xl h-18 rounded-xl" />
+          (no --reload in production)         <Skeleton className="w-full max-w-xl h-18 rounded-xl" />
           <Skeleton className="w-full max-w-xl h-18 rounded-xl" />
         </div>
         <div className="flex sm:flex-row flex-col gap-4">

@@ -76,8 +76,13 @@ export default function SharedRepositoryInfo() {
     },
   })
 
-  devLog("Repository:", repo);
-  devLog("Local Repository:", repoLocal);
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-UK", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
 
   if (!repositoryName || !githubUsername) {
     return (
@@ -88,13 +93,10 @@ export default function SharedRepositoryInfo() {
     );
   }
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-UK", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
+  const isOwner = repo?.owner?.login === userDetails?.github_username;
+
+  devLog("Repository:", repo);
+  devLog("Local Repository:", repoLocal);
 
   return (
     <div className="flex flex-col max-w-5xl mx-auto w-full border border-border rounded shadow bg-card sm:p-8 p-4 gap-4">
@@ -126,7 +128,7 @@ export default function SharedRepositoryInfo() {
       )}
 
       {/* Share Button (renders only if repo isn't public yet) */}
-      {!repoLocal && (
+      {isOwner && !repoLocal && (
         <div className="flex gap-2 items-center">
           <span className="text-muted-foreground text-sm">
             Looking for Contributors?

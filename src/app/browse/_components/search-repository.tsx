@@ -3,7 +3,7 @@ import { Search } from "lucide-react";
 
 export default function SearchRepository() {
   return (
-    <div className="relative ">
+    <div className="relative animate-in fade-in duration-500">
       <Input className="md:text-xl w-full pr-10 bg-card" />
       <button
         className="group absolute size-8 flex items-center justify-center rounded 

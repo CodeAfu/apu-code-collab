@@ -1,4 +1,4 @@
-import React, {
+import {
   HTMLAttributes,
   ReactNode,
   useEffect,
@@ -10,12 +10,12 @@ import DropdownContent from "./dropdown-content";
 import { cn } from "@/lib/utils";
 import { AnimatePresence } from "motion/react";
 
-type AnchorPosition = 
-  | "top-left" 
-  | "top-center" 
+type AnchorPosition =
+  | "top-left"
+  | "top-center"
   | "top-right"
-  | "bottom-left" 
-  | "bottom-center" 
+  | "bottom-left"
+  | "bottom-center"
   | "bottom-right"
   | "left-top"
   | "left-center"
@@ -29,6 +29,7 @@ interface DropdownProps extends HTMLAttributes<HTMLDivElement> {
   anchor?: AnchorPosition;
   offset?: number;
   preventOverflow?: boolean;
+  parentClassName?: string;
 }
 
 export default function Dropdown({
@@ -43,10 +44,10 @@ export default function Dropdown({
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  
+
   const handleClick = () => setIsOpen((prev) => !prev);
   const handleClose = () => setIsOpen(false);
-  
+
   const triggerHeight = triggerRef.current?.clientHeight;
   const triggerWidth = triggerRef.current?.clientWidth;
 
@@ -66,7 +67,7 @@ export default function Dropdown({
   }, [isOpen]);
 
   return (
-    <div className="relative group flex flex-col items-center">
+    <div className={cn("relative group flex flex-col items-center")}>
       <DropdownTrigger onClick={handleClick} ref={triggerRef}>
         {triggerNode}
       </DropdownTrigger>

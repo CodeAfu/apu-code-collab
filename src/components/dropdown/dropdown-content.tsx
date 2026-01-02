@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import { HTMLAttributes, RefObject, useEffect, useState } from "react";
 import { AnchorPosition } from "./types";
+import { createPortal } from "react-dom";
 
 interface Position {
   top?: number;

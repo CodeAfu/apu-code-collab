@@ -14,6 +14,8 @@ export interface UserDetails {
   github_username: string | null;
   github_avatar_url: string | null;
   is_github_linked: boolean;
+  university_course: string | null;
+  course_year: string | null;
   created_at: Date;
   updated_at: Date;
 }

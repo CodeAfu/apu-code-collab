@@ -92,7 +92,7 @@ export default function BrowseContents() {
             <LoadingSkeleton key={i} />
           ))
         ) : isEmpty ? (
-          <Card className="p-12 border border-border text-center text-muted-foreground">
+          <Card className="p-12 border border-border text-center text-muted-foreground animate-in fade-in duration-500">
             No repositories found. Why not share one?
           </Card>
         ) : (
@@ -106,7 +106,7 @@ export default function BrowseContents() {
                     href={`/repo?githubUsername=${repo.owner.login}&repositoryName=${repo.name}`}
                     className="block group"
                   >
-                    <Card className="p-6 border border-border transition-colors hover:border-primary/50">
+                    <Card className="p-6 border border-border shadow transition-colors hover:border-primary/50 animate-in fade-in duration-500">
                       <div className="flex flex-col gap-3">
                         {/* Header: Owner & Name */}
                         <div className="flex items-start justify-between">
