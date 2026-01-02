@@ -2,6 +2,12 @@
 export const USER_ROLES = ["student", "teacher", "admin"] as const;
 export type UserRole = typeof USER_ROLES[number];
 
+export interface UniversityCourse {
+  id: string;
+  name: string;
+  code: string;
+}
+
 export interface UserDetails {
   id: string;
   apu_id: string;
@@ -14,7 +20,7 @@ export interface UserDetails {
   github_username: string | null;
   github_avatar_url: string | null;
   is_github_linked: boolean;
-  university_course: string | null;
+  university_course: UniversityCourse,
   course_year: string | null;
   created_at: Date;
   updated_at: Date;

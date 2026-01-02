@@ -99,7 +99,7 @@ export default function SharedRepositoryInfo() {
   devLog("Local Repository:", repoLocal);
 
   return (
-    <div className="flex flex-col max-w-5xl mx-auto w-full border border-border rounded shadow bg-card sm:p-8 p-4 gap-4">
+    <div className="flex flex-col max-w-5xl mx-auto w-full border border-border rounded shadow bg-card sm:p-8 p-4 gap-4 animate-in fade-in duration-500">
       {/* Header */}
       <div className="flex items-start gap-4">
         <Code2 className="md:size-10 sm:size-8 size-6 text-muted-foreground flex-shrink-0 mt-1" />

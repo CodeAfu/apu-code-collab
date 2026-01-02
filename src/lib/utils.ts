@@ -57,3 +57,7 @@ export function logApiError(...args: unknown[]): void {
     console.error("Unknown:", error);
   }
 }
+
+export function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+} 

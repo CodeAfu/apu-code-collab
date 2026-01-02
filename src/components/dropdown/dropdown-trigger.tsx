@@ -16,7 +16,7 @@ export default function DropdownTrigger({
   return (
     <div
       ref={ref}
-      className={cn("relative inline-block group-focus:ring-1", className)}
+      className={cn("relative flex w-full group-focus:ring-1", className)}
       {...props}
     >
       {children}
