@@ -6,7 +6,7 @@ import { Link as LinkIcon } from "lucide-react";
 export default function ConnectGitHubButton() {
   const handleConnect = () => {
     const clientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
-    const redirectUri = "http://localhost:3000/auth/github/callback";
+    const redirectUri = `${window.location.origin}/auth/github/callback`;
     // Scope 'repo' is required to read private repositories, 'public_repo' for public only
     const scope = "read:user repo";
     const githubUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
