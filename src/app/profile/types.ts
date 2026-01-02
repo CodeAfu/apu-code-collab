@@ -4,6 +4,7 @@ export const YEARS = ["YEAR 1", "YEAR 2", "YEAR 3", "YEAR 4"] as const;
 export type YearDisplayType = typeof YEARS[number];
 
 const YEARS_DB = ["year_1", "year_2", "year_3", "year_4"] as const;
+export type YearDisplayTypeDB = typeof YEARS_DB[number];
 
 export const universityCoursesSchema = z.object({
   id: z.string(),
