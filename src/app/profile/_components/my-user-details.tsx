@@ -2,7 +2,7 @@
 
 import Skeleton from "@/components/skeleton";
 import { useUser } from "@/hooks/use-user";
-import { devLog, logApiError, sleep } from "@/lib/utils";
+import { devLog, logApiError } from "@/lib/utils";
 import { GraduationCap, Mail, Hash, Calendar, Shield } from "lucide-react";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { useEffect, useRef, useState } from "react";
@@ -317,7 +317,9 @@ export default function MyUserDetails() {
                   )
                 ) : (
                   <dd className="mt-1 text-sm font-medium leading-tight truncate">
-                    {userDetails.university_course.name + " (" + userDetails.university_course.code + ")" || "Not enrolled"}
+                    {userDetails.university_course
+                      ? `${userDetails.university_course.name} (${userDetails.university_course.code})`
+                      : "Not enrolled"}
                   </dd>
                 )}
               </div>
