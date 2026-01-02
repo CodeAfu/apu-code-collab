@@ -7,7 +7,7 @@ import Skeleton from "@/components/skeleton";
 
 function LoadingSkeleton() {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mx-auto w-full max-w-7xl sm:my-8 my-4">
       <Skeleton className="h-12 rounded" />
       <Card className="p-6">
         <div className="flex flex-col gap-4">
@@ -28,17 +28,17 @@ function LoadingSkeleton() {
 export default function BrowsePage() {
   return (
     <div className="flex flex-col">
-      <GridPageLayout>
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="flex flex-col gap-4">
-            <AuthGuard requireGitHubAccessToken fallback={<LoadingSkeleton />}>
+      <AuthGuard requireGitHubAccessToken fallback={<LoadingSkeleton />}>
+        <GridPageLayout>
+          <div className="max-w-7xl mx-auto px-4 py-8">
+            <div className="flex flex-col gap-4">
               <Suspense fallback={<LoadingSkeleton />}>
                 <BrowseContents />
               </Suspense>
-            </AuthGuard>
+            </div>
           </div>
-        </div>
-      </GridPageLayout>
+        </GridPageLayout>
+      </AuthGuard>
     </div>
   );
 }

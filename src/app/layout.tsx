@@ -9,6 +9,7 @@ import "./globals.css";
 import DevTray from "@/components/dev-tray";
 import Footer from "@/components/footer";
 import Providers from "@/providers/providers";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "APU CodeSpace",
@@ -46,6 +47,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <Footer />
+          <Toaster theme="dark" position="top-center" closeButton={true} />
           <DevTray>
             <ThemeToggle />
           </DevTray>

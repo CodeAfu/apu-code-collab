@@ -1,8 +1,15 @@
 "use client";
-import React from "react";
+
+import {
+  HTMLAttributes,
+  RefObject,
+  useEffect,
+  useLayoutEffect,
+  useState
+} from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
-import { HTMLAttributes, RefObject, useEffect, useState } from "react";
 import { AnchorPosition } from "./types";
 
 interface Position {
@@ -15,164 +22,141 @@ interface Position {
 
 interface DropdownContentProps extends HTMLAttributes<HTMLDivElement> {
   ref: RefObject<HTMLDivElement | null>;
-  triggerHeight?: number;
-  triggerWidth?: number;
+  triggerRef: RefObject<HTMLDivElement | null>;
   anchor?: AnchorPosition;
   offset?: number;
   preventOverflow?: boolean;
+  handleClose?: () => void;
 }
+
+// Helper to safely use layout effect on server vs client
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 export default function DropdownContent({
   children,
-  triggerHeight = 0,
-  triggerWidth = 0,
+  triggerRef,
   anchor = "bottom-left",
   offset = 8,
   preventOverflow = true,
   className,
   ref,
-}: DropdownContentProps) {
+  handleClose,
+  style, }: DropdownContentProps) {
   const [position, setPosition] = useState<Position>({});
 
-  useEffect(() => {
-    if (!ref.current) return;
+  // Ensure we mount only on client to access document.body
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
-    const updatePosition = () => {
-      const dropdown = ref.current;
-      if (!dropdown) return;
+  const updatePosition = () => {
+    if (!triggerRef.current || !ref.current) return;
 
-      const rect = dropdown.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const viewportWidth = window.innerWidth;
+    const triggerRect = triggerRef.current.getBoundingClientRect();
+    const contentRect = ref.current.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
 
-      const newPosition: Position = {};
+    const newPosition: Position = {};
 
-      // Calculate initial position based on anchor
-      switch (anchor) {
-        case "bottom-left":
-          newPosition.top = triggerHeight + offset;
-          newPosition.left = 0;
-          break;
-        case "bottom-center":
-          newPosition.top = triggerHeight + offset;
-          newPosition.left = triggerWidth / 2;
-          newPosition.transform = "translateX(-50%)";
-          break;
-        case "bottom-right":
-          newPosition.top = triggerHeight + offset;
-          newPosition.right = 0;
-          break;
-        case "top-left":
-          newPosition.bottom = triggerHeight + offset;
-          newPosition.left = 0;
-          break;
-        case "top-center":
-          newPosition.bottom = triggerHeight + offset;
-          newPosition.left = triggerWidth / 2;
-          newPosition.transform = "translateX(-50%)";
-          break;
-        case "top-right":
-          newPosition.bottom = triggerHeight + offset;
-          newPosition.right = 0;
-          break;
-        case "left-top":
-          newPosition.right = triggerWidth + offset;
-          newPosition.top = 0;
-          break;
-        case "left-center":
-          newPosition.right = triggerWidth + offset;
-          newPosition.top = triggerHeight / 2;
-          newPosition.transform = "translateY(-50%)";
-          break;
-        case "left-bottom":
-          newPosition.right = triggerWidth + offset;
-          newPosition.bottom = 0;
-          break;
-        case "right-top":
-          newPosition.left = triggerWidth + offset;
-          newPosition.top = 0;
-          break;
-        case "right-center":
-          newPosition.left = triggerWidth + offset;
-          newPosition.top = triggerHeight / 2;
-          newPosition.transform = "translateY(-50%)";
-          break;
-        case "right-bottom":
-          newPosition.left = triggerWidth + offset;
-          newPosition.bottom = 0;
-          break;
-      }
+    switch (anchor) {
+      case "bottom-left":
+        newPosition.top = triggerRect.bottom + offset;
+        newPosition.left = triggerRect.left;
+        break;
+      case "bottom-center":
+        newPosition.top = triggerRect.bottom + offset;
+        newPosition.left = triggerRect.left + triggerRect.width / 2;
+        newPosition.transform = "translateX(-50%)";
+        break;
+      case "bottom-right":
+        newPosition.top = triggerRect.bottom + offset;
+        // Align right edge of content with right edge of trigger
+        // left = triggerRight - contentWidth
+        newPosition.left = triggerRect.right - contentRect.width;
+        break;
 
-      // Overflow prevention
-      if (preventOverflow) {
-        // const dropdownRect = dropdown.getBoundingClientRect();
-        const parentRect = dropdown.parentElement?.getBoundingClientRect();
+      case "top-left":
+        newPosition.top = triggerRect.top - contentRect.height - offset;
+        newPosition.left = triggerRect.left;
+        break;
+      case "top-center":
+        newPosition.top = triggerRect.top - contentRect.height - offset;
+        newPosition.left = triggerRect.left + triggerRect.width / 2;
+        newPosition.transform = "translateX(-50%)";
+        break;
+      case "top-right":
+        newPosition.top = triggerRect.top - contentRect.height - offset;
+        newPosition.left = triggerRect.right - contentRect.width;
+        break;
 
-        if (!parentRect) return;
+      case "left-top":
+        newPosition.top = triggerRect.top;
+        newPosition.left = triggerRect.left - contentRect.width - offset;
+        break;
+      case "left-center":
+        newPosition.top = triggerRect.top + triggerRect.height / 2;
+        newPosition.left = triggerRect.left - contentRect.width - offset;
+        newPosition.transform = "translateY(-50%)";
+        break;
+      case "left-bottom":
+        newPosition.top = triggerRect.bottom - contentRect.height;
+        newPosition.left = triggerRect.left - contentRect.width - offset;
+        break;
 
-        // Check if dropdown overflows viewport
-        const overflowBottom =
-          parentRect.top + (newPosition.top || 0) + rect.height >
-          viewportHeight;
-        const overflowTop =
-          parentRect.top - (newPosition.bottom || 0) - rect.height < 0;
-        const overflowRight =
-          parentRect.left + (newPosition.left || 0) + rect.width >
-          viewportWidth;
-        const overflowLeft =
-          parentRect.left - (newPosition.right || 0) - rect.width < 0;
+      case "right-top":
+        newPosition.top = triggerRect.top;
+        newPosition.left = triggerRect.right + offset;
+        break;
+      case "right-center":
+        newPosition.top = triggerRect.top + triggerRect.height / 2;
+        newPosition.left = triggerRect.right + offset;
+        newPosition.transform = "translateY(-50%)";
+        break;
+      case "right-bottom":
+        newPosition.top = triggerRect.bottom - contentRect.height;
+        newPosition.left = triggerRect.right + offset;
+        break;
+    }
 
-        // Flip vertically if needed
-        if (overflowBottom && !overflowTop && anchor.startsWith("bottom")) {
-          delete newPosition.top;
-          newPosition.bottom = triggerHeight + offset;
-        } else if (overflowTop && !overflowBottom && anchor.startsWith("top")) {
-          delete newPosition.bottom;
-          newPosition.top = triggerHeight + offset;
-        }
+    if (preventOverflow && newPosition.top !== undefined && newPosition.left !== undefined) {
 
-        // Flip horizontally if needed
-        if (overflowRight && !overflowLeft) {
-          if (newPosition.left !== undefined) {
-            delete newPosition.left;
-            newPosition.right = 0;
-          }
-        } else if (overflowLeft && !overflowRight) {
-          if (newPosition.right !== undefined) {
-            delete newPosition.right;
-            newPosition.left = 0;
-          }
-        }
-
-        // Adjust horizontal centering if overflowing
-        if (
-          anchor.includes("center") &&
-          newPosition.transform?.includes("translateX")
-        ) {
-          const wouldOverflowRight =
-            parentRect.left + triggerWidth / 2 + rect.width / 2 > viewportWidth;
-          const wouldOverflowLeft =
-            parentRect.left + triggerWidth / 2 - rect.width / 2 < 0;
-
-          if (wouldOverflowRight) {
-            delete newPosition.left;
-            delete newPosition.transform;
-            newPosition.right = 0;
-          } else if (wouldOverflowLeft) {
-            delete newPosition.left;
-            delete newPosition.transform;
-            newPosition.left = 0;
-          }
+      // Check Bottom Overflow
+      if (newPosition.top + contentRect.height > viewportHeight) {
+        // If it was bottom-*, flip to top
+        if (anchor.startsWith("bottom")) {
+          newPosition.top = triggerRect.top - contentRect.height - offset;
         }
       }
 
-      setPosition(newPosition);
-    };
+      // Check Top Overflow
+      if (newPosition.top < 0) {
+        // If it was top-*, flip to bottom
+        if (anchor.startsWith("top")) {
+          newPosition.top = triggerRect.bottom + offset;
+        }
+      }
 
-    // Initial position calculation
+      // Check Right Overflow
+      // (Calculate actual right edge including width)
+      const currentRight = newPosition.left + contentRect.width;
+      if (currentRight > viewportWidth) {
+        // Shift left to fit
+        newPosition.left = viewportWidth - contentRect.width - 8; // 8px padding
+      }
+
+      // Check Left Overflow
+      // (If transform is centering, actual left is calculated differently, but simplified here)
+      if (newPosition.left < 0) {
+        newPosition.left = 8; // 8px padding
+      }
+    }
+
+    setPosition(newPosition);
+  };
+
+  // Recalculate on mount, scroll, resize
+  useIsomorphicLayoutEffect(() => {
     updatePosition();
-
-    // Recalculate on scroll or resize
     window.addEventListener("scroll", updatePosition, true);
     window.addEventListener("resize", updatePosition);
 
@@ -180,20 +164,27 @@ export default function DropdownContent({
       window.removeEventListener("scroll", updatePosition, true);
       window.removeEventListener("resize", updatePosition);
     };
-  }, [triggerHeight, triggerWidth, anchor, offset, preventOverflow, ref]);
+  }, [mounted, anchor, offset, preventOverflow, triggerRef]);
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <motion.div
       ref={ref}
+      onClick={() => {
+        handleClose?.();
+      }}
       style={{
-        top: position.top !== undefined ? `${position.top}px` : undefined,
-        bottom:
-          position.bottom !== undefined ? `${position.bottom}px` : undefined,
-        left: position.left !== undefined ? `${position.left}px` : undefined,
-        right: position.right !== undefined ? `${position.right}px` : undefined,
+        ...style,
+        position: "fixed",
+        top: position.top ?? 0,
+        left: position.left ?? 0,
         transform: position.transform,
+        // Ensure max height fits within viewport
         maxHeight: "calc(100vh - 16px)",
         overflowY: "auto",
+        // Hide until calculated (prevents jump)
+        visibility: Object.keys(position).length === 0 ? "hidden" : "visible"
       }}
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{
@@ -207,12 +198,13 @@ export default function DropdownContent({
         transition: { duration: 0.15, ease: "easeIn" },
       }}
       className={cn(
-        "absolute z-30 bg-card p-2 min-w-[12rem] max-w-[calc(100vw-16px)]",
+        "z-50 bg-card min-w-[12rem] max-w-[calc(100vw-16px)] overflow-scroll",
         "border border-border shadow-lg rounded-md",
         className
       )}
     >
       {children}
-    </motion.div>
+    </motion.div>,
+    document.body
   );
 }

@@ -1,4 +1,4 @@
-import React, {
+import {
   HTMLAttributes,
   ReactNode,
   useEffect,
@@ -9,20 +9,7 @@ import DropdownTrigger from "./dropdown-trigger";
 import DropdownContent from "./dropdown-content";
 import { cn } from "@/lib/utils";
 import { AnimatePresence } from "motion/react";
-
-type AnchorPosition = 
-  | "top-left" 
-  | "top-center" 
-  | "top-right"
-  | "bottom-left" 
-  | "bottom-center" 
-  | "bottom-right"
-  | "left-top"
-  | "left-center"
-  | "left-bottom"
-  | "right-top"
-  | "right-center"
-  | "right-bottom";
+import { AnchorPosition } from "./types";
 
 interface DropdownProps extends HTMLAttributes<HTMLDivElement> {
   triggerNode: ReactNode;
@@ -43,12 +30,9 @@ export default function Dropdown({
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  
+
   const handleClick = () => setIsOpen((prev) => !prev);
   const handleClose = () => setIsOpen(false);
-  
-  const triggerHeight = triggerRef.current?.clientHeight;
-  const triggerWidth = triggerRef.current?.clientWidth;
 
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
@@ -61,25 +45,28 @@ export default function Dropdown({
         handleClose();
       }
     };
-    if (isOpen) document.addEventListener("mousedown", handleOutsideClick);
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleOutsideClick);
+    }
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, [isOpen]);
 
   return (
-    <div className="relative group flex flex-col items-center">
+    <div className={cn("relative w-full", className)}>
       <DropdownTrigger onClick={handleClick} ref={triggerRef}>
         {triggerNode}
       </DropdownTrigger>
+
       <AnimatePresence>
         {isOpen && (
           <DropdownContent
             ref={contentRef}
-            triggerHeight={triggerHeight}
-            triggerWidth={triggerWidth}
+            triggerRef={triggerRef}
             anchor={anchor}
             offset={offset}
             preventOverflow={preventOverflow}
-            className={cn("", className)}
+            handleClose={handleClose}
             {...props}
           >
             {children}

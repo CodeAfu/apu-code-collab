@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTheme } from "next-themes";
 import { ProfileItemType } from "@/lib/types";
 import {
-  BookMarked,
+  Bell,
   CircleUserRound,
   Moon,
   Sun,
@@ -21,10 +21,10 @@ export function useProfileMenu() {
         label: "Profile",
       },
       {
-        type: "link",
-        icon: <BookMarked />,
-        href: "/profile/repositories",
-        label: "Repositories",
+        type: "button",
+        icon: <Bell />,
+        onClick: () => alert("Not yet implemented"),
+        label: "Notifications",
       },
       {
         type: "separator",

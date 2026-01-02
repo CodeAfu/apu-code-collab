@@ -30,7 +30,7 @@ export default function MyRepositories() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full animate-in fade-in duration-500">
       <h1 className="text-2xl font-bold mt-8">GitHub Repositories</h1>
       <p className="text-muted-foreground mb-4">Your repositories are only made public to the website if you are looking for collaborators on that project.</p>
       {isFetching ? (
