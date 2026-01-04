@@ -35,6 +35,9 @@ function RepoPageSkeleton() {
           <Skeleton className="w-full h-32 rounded-xl" />
           <Skeleton className="w-full sm:max-w-84 h-32 rounded-xl" />
         </div>
+        <div className="flex sm:flex-row flex-col gap-4">
+          <Skeleton className="w-full h-48 rounded-xl" />
+        </div>
       </Card>
       <Card className="flex flex-col gap-4">
         <Skeleton className="w-full max-w-64 h-12 rounded-xl" />

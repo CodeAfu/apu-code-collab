@@ -1,3 +1,4 @@
+import { GitHubRepositoryLocal } from "./github";
 
 export const USER_ROLES = ["student", "teacher", "admin"] as const;
 export type UserRole = typeof USER_ROLES[number];
@@ -7,6 +8,7 @@ export interface UniversityCourse {
   name: string;
   code: string;
 }
+
 
 export interface UserDetails {
   id: string;
@@ -22,6 +24,7 @@ export interface UserDetails {
   is_github_linked: boolean;
   university_course: UniversityCourse | null,
   course_year: string | null;
+  github_repositories: GitHubRepositoryLocal[];
   created_at: Date;
   updated_at: Date;
 }

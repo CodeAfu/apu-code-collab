@@ -109,6 +109,18 @@ export interface GitHubRepository {
   };
 };
 
+export interface GitHubRepositoryLocal {
+  id: string;
+  name: string;
+  description: string;
+  url: string;
+  collaborators: string[]; // GitHub usernames
+  contributors: string[]; // GitHub usernames
+  skills: string[];
+  created_at: Date;
+  updated_at: Date;
+}
+
 export interface GitHubRepositoriesResponse {
   items: GitHubRepository[];
 };

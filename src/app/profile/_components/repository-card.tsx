@@ -1,6 +1,7 @@
 import { GitHubRepository } from "@/types/github";
 import { Code2, ExternalLink, Star, GitFork, Users, Calendar } from "lucide-react";
 import { motion } from "motion/react";
+import Link from "next/link";
 
 interface RepositoryCardProps {
   repository: GitHubRepository;
@@ -20,12 +21,12 @@ export default function RepositoryCard({ repository }: RepositoryCardProps) {
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2 flex-1 min-w-0">
           <Code2 className="w-5 h-5 text-muted-foreground flex-shrink-0" />
-          <a
+          <Link
             href={`/repo?repositoryName=${repository.name}&githubUsername=${repository.owner.login}`}
             className="text-lg inline-flex items-center gap-2 font-semibold popover-foreground group group-hover:text-accent hover:text-accent hover:underline truncate transition duration-200"
           >
             {repository.name}
-          </a>
+          </Link>
           <motion.a
             whileHover={{ scale: 1.2 }}
             transition={{
