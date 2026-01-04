@@ -15,18 +15,18 @@ import {
   AlertCircle,
   Waypoints,
   Check,
-  Edit,
   Plus
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { withAuth } from "@/lib/auth";
 import { useUser } from "@/hooks/use-user";
-import { useRef, useState } from "react";
-import { toast } from "sonner";
+import { useEffect, useRef, useState } from "react";
 import React from "react";
 import SkillsModal from "./skills-modal";
 import { SkillItem } from "../types";
+import DescriptionSection from "./description-section.tsx";
+import { AnimatePresence, motion } from "motion/react";
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString("en-UK", {
@@ -43,11 +43,9 @@ export default function SharedRepositoryInfo() {
   const repositoryName = searchParams.get("repositoryName");
   const githubUsername = searchParams.get("githubUsername");
 
-  const [skills, setSkills] = useState<SkillItem[]>([{ id: "init-1", value: "" }]);
+  const [skills, setSkills] = useState<SkillItem[]>([{ id: "init-1", name: "" }]);
   const [isSkillsModalOpen, setIsSkillsModalOpen] = useState(false);
-
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const [editDescriptionMode, setEditDescriptionMode] = useState(false);
+  const skillsPopulated = useRef(false);
 
   const { data: repo } = useSuspenseQuery<GitHubRepository>({
     queryKey: ["github", "repos", githubUsername, repositoryName],
@@ -102,37 +100,16 @@ export default function SharedRepositoryInfo() {
     },
   })
 
-  const {
-    mutate: editDescriptionHandler,
-    isPending: isEditDescriptionPending,
-    // isSuccess: isEditDescriptionSuccess,
-    // isError: isEditDescriptionError
-  } = useMutation({
-    mutationFn: withAuth(async () => {
-      if (!decodedUserToken) {
-        throw new Error("Missing user token or repo");
-      }
-      if (!repoLocal) {
-        throw new Error("Attempted to edit description before repo information was loaded");
-      }
-      const payload = {
-        description: textAreaRef.current?.value
-      }
-      const response = await api.put(`/api/v1/github/repos/${repoLocal.id}`, payload)
-      return response.data;
-    }),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["github", "repos"] });
-      toast.success("Successfully edited description");
-      devLog("Success:", data);
-      setEditDescriptionMode(false);
-    },
-    onError: (error) => {
-      toast.error("Failed to edit description");
-      logApiError(error);
-      setEditDescriptionMode(false);
-    },
-  })
+  useEffect(() => {
+    if (skillsPopulated.current) {
+      return;
+    }
+    if (repoLocal && repoLocal.skills.length <= 0) {
+      return;
+    }
+    skillsPopulated.current = true;
+    setSkills(repoLocal.skills.map((s: string) => ({ id: crypto.randomUUID(), name: s })));
+  }, [repoLocal]);
 
   if (!repositoryName || !githubUsername) {
     return (
@@ -150,7 +127,6 @@ export default function SharedRepositoryInfo() {
 
   return (
     <React.Fragment>
-
       <div className="flex flex-col max-w-5xl mx-auto w-full border border-border rounded shadow bg-card sm:p-8 p-4 gap-4 animate-in fade-in duration-500">
         {/* Header */}
         <div className="flex items-start gap-4">
@@ -260,6 +236,11 @@ export default function SharedRepositoryInfo() {
                 >
                   {repoLocal ? "Public" : "Private"}
                 </span>
+                {repoLocal && (
+                  <button className="font-medium">
+                    Remove
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -302,87 +283,62 @@ export default function SharedRepositoryInfo() {
           </div>
         )}
 
-        <div className="p-4 border rounded-lg transition-all duration-200">
-
-          {isOwner && (
-            <div className="mb-6">
-              <h2 className="font-semibold text-lg">Looking for Contributors?</h2>
-              <p className="text-sm text-muted-foreground">
-                Share information about your project and find your best-fit collaborators!
-              </p>
-            </div>
-          )}
-
-          <section className="mb-6">
-            <div className="flex items-center gap-2">
-              <h4 className="font-semibold text-md">Description</h4>
-              {isOwner && (
-                <button
-                  className="group rounded p-1 hover:cursor-pointer hover:bg-accent/20 transition duration-200"
-                  onClick={() => setEditDescriptionMode(!editDescriptionMode)}
-                >
-                  <Edit className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-            <p className="text-sm text-muted-foreground">Provide information to broadcast with potential collaborators about your project.</p>
-            <textarea
-              ref={textAreaRef}
-              placeholder="Add a description..."
-              defaultValue={repoLocal.description || ""}
-              disabled={!editDescriptionMode}
-              className="w-full h-24 rounded-lg border border-border px-2 py-1.5 text-sm text-foreground bg-card mt-4 resize-none
-            focus:outline-none focus:ring-1 focus:ring-ring transition duration-200 disabled:bg-muted"
-            />
-            <ul className="italic text-muted-foreground text-xs">
-              <li>- The project description provided here is not linked to your GitHub repository.</li>
-              <li>- This description will be displayed on the project browsing page on this website.</li>
-            </ul>
-            <div
-              className={cn("grid transition-[grid-template-rows] duration-200 ease-out",
-                editDescriptionMode ? "grid-rows-[1fr]" : "grid-rows-[0fr]")}
-            >
-              <div className="overflow-hidden">
-                <div className="flex justify-end items-center gap-2 pt-4">
-                  <button
-                    onClick={() => editDescriptionHandler()}
-                    disabled={isEditDescriptionPending || !editDescriptionMode || !isOwner}
-                    className="inline-flex items-center gap-2 text-sm px-2 py-1.5 rounded bg-primary text-primary-foreground border border-border
-            hover:cursor-pointer hover:bg-primary/80 transition duration-200"
-                  >
-                    {isEditDescriptionPending ? "Saving..." : "Save"}
-                  </button>
-                </div>
+        {repoLocal && (
+          <div className="p-4 border rounded-lg transition-all duration-200">
+            {isOwner && (
+              <div className="mb-6">
+                <h2 className="font-semibold text-lg">Looking for Contributors?</h2>
+                <p className="text-sm text-muted-foreground">
+                  Share information about your project and find your best-fit collaborators!
+                </p>
               </div>
-            </div>
-          </section>
+            )}
 
-          <section>
-            <h4 className="font-semibold text-md">Skills</h4>
-            <p className="text-sm text-muted-foreground mb-2">
-              Recommended skills for collaborators.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {repoLocal.skills.map((skill: string, index: number) => (
-                <div key={index} className="flex items-center gap-2">
-                  <span className="inline-flex items-center justify-center whitespace-nowrap text-sm border border-primary bg-primary/20 rounded-full shadow text-primary">{skill}</span>
-                </div>
-              ))}
-              {isOwner && (
-                <button
-                  onClick={() => setIsSkillsModalOpen(true)}
-                  className="size-6 inline-flex items-center justify-center border border-foreground text-foreground rounded shadow
+            <DescriptionSection isOwner={isOwner} repoLocal={repoLocal} />
+
+            <section>
+              <h4 className="font-semibold text-md">Skills</h4>
+              <p className="text-sm text-muted-foreground mb-2">
+                Recommended skills for collaborators.
+              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <AnimatePresence>
+                  {repoLocal.skills.map((skill: string, index: number) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <motion.span
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        className="inline-flex items-center justify-center whitespace-nowrap px-2 py-0.5 text-sm border border-accent bg-accent/10 rounded-full shadow text-accent">
+                        {skill}
+                      </motion.span>
+                    </div>
+                  ))}
+                </AnimatePresence>
+                {isOwner && (
+                  <button
+                    onClick={() => setIsSkillsModalOpen(true)}
+                    className="size-6 inline-flex items-center justify-center border border-foreground text-foreground rounded shadow
                     hover:cursor-pointer hover:border-primary hover:text-primary hover:bg-primary/20 hover:scale-105 transition duration-200"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-          </section>
-        </div >
-      </div>
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            </section>
+          </div>
+        )}
 
-      <SkillsModal skills={skills} setSkills={setSkills} isSkillsModalOpen={isSkillsModalOpen} setIsSkillsModalOpen={setIsSkillsModalOpen} />
+      </div>
+      {repoLocal && (
+        <SkillsModal
+          repositoryId={repoLocal?.id}
+          skills={skills}
+          setSkills={setSkills}
+          isSkillsModalOpen={isSkillsModalOpen}
+          setIsSkillsModalOpen={setIsSkillsModalOpen}
+        />
+      )}
     </React.Fragment >
   );
 }
