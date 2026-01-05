@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AnimatePresence, motion } from "motion/react";
-import { X, Code2, Plus, Settings2, Check, Loader2 } from "lucide-react";
+import { X, Plus, Settings2, Check, Loader2 } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import api from "@/lib/api";
 import { withAuth } from "@/lib/auth";

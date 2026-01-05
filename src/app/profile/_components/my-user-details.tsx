@@ -110,7 +110,7 @@ export default function MyUserDetails() {
       <div className="w-full flex flex-col gap-4 animate-in fade-in duration-500">
 
         {/* Header Section */}
-        <div className="border-b pb-2">
+        <div className="border-b pb-4">
 
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
             {/* Avatar */}
@@ -229,10 +229,13 @@ export default function MyUserDetails() {
         </div>
 
         {/* Content Grid */}
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-[1fr_min(420px,35%)] 
+          [grid-template-areas:'academic'_'github'_'tech'] 
+          md:[grid-template-areas:'academic_tech'_'github_tech']"
+        >
 
           {/* Academic Card */}
-          <div className="group relative overflow-hidden rounded-xl border bg-card p-6 shadow-sm transition-all hover:shadow-md">
+          <div className="[grid-area:academic] group relative overflow-hidden rounded-xl border bg-card p-6 shadow-sm transition-all hover:shadow-md">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-lg">
                 <GraduationCap className="w-5 h-5" />
@@ -269,7 +272,6 @@ export default function MyUserDetails() {
                       </div>
                     </Dropdown>
                   ) : (
-                    // Fallback if no courses found
                     <div>No courses available</div>
                   )
                 ) : (
@@ -317,7 +319,7 @@ export default function MyUserDetails() {
           </div>
 
           {/* GitHub Card */}
-          <div className="group relative overflow-hidden rounded-xl border bg-card p-6 shadow-sm transition-all hover:shadow-md">
+          <div className="[grid-area:github] group relative overflow-hidden rounded-xl border bg-card p-6 shadow-sm transition-all hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-zinc-100 dark:bg-zinc-800 text-foreground rounded-lg">
@@ -352,7 +354,6 @@ export default function MyUserDetails() {
             ) : (
               <div className="flex flex-col items-center justify-center py-2 text-center">
                 <p className="text-sm text-muted-foreground mb-3">No account connected</p>
-                {/* Placeholder for future button */}
                 <div className="px-3 py-1.5 rounded-md border border-dashed text-xs text-muted-foreground bg-muted/30">
                   Link account in Settings
                 </div>
@@ -360,9 +361,12 @@ export default function MyUserDetails() {
             )}
           </div>
 
-          <UserPreferences className="" />
+          {/* Tech Preferences */}
+          <UserPreferences className="[grid-area:tech] h-full" />
 
         </div>
+
+        {/* ... Footer (Joined Date) ... */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-muted-foreground/60 font-mono">
           <div className="flex items-center gap-1">
             <Calendar className="w-3 h-3" />
@@ -382,7 +386,6 @@ export default function MyUserDetails() {
         lastNameRef={lastNameRef}
         emailRef={emailRef}
       />
-
     </React.Fragment >
   );
 }
