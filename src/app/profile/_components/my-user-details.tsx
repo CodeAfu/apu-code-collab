@@ -2,28 +2,24 @@
 
 import Skeleton from "@/components/skeleton";
 import { useUser } from "@/hooks/use-user";
-import { devLog, logApiError } from "@/lib/utils";
+import { devLog } from "@/lib/utils";
 import { GraduationCap, Mail, Hash, Calendar, Shield } from "lucide-react";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { useEffect, useRef, useState } from "react";
 import api from "@/lib/api";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import Dropdown from "@/components/dropdown/dropdown";
-import { ProfileEditRequest, profileEditRequestSchema, YearDisplayType, YEARS } from "../types";
-import { formatEnumString, formatDate, formatYearToEnum } from "../utils";
+import { YearDisplayType, YEARS } from "../types";
+import { formatEnumString, formatDate } from "../utils";
 import React from "react";
-import Modal from "@/components/modal";
 import { toast } from "sonner";
-import { withAuth } from "@/lib/auth";
-import { AnimatePresence, motion } from "motion/react";
-import LoadingSpinner from "@/components/loading-spinner";
+import SaveChangesModal from "./save-changes-modal";
+import UserPreferences from "./user-preferences";
 
 export default function MyUserDetails() {
-  const queryClient = useQueryClient();
   const { userDetails } = useUser();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [editMode, setEditMode] = useState(false);
   const [detailsCompleted, setDetailsCompleted] = useState(true);
 
@@ -46,40 +42,6 @@ export default function MyUserDetails() {
     gcTime: 1000 * 60 * 60 * 2, // 2 hours
   });
 
-  const { mutate: editAccountDetails, isPending, isSuccess, isError } = useMutation({
-    mutationFn: withAuth(async () => {
-      const payload: ProfileEditRequest = {
-        first_name: firstNameRef.current?.value,
-        last_name: lastNameRef.current?.value,
-        email: emailRef.current?.value,
-        university_course: selectedCourse,
-        course_year: selectedYear ? formatYearToEnum(selectedYear) : undefined
-      };
-
-      const validatedPayload = profileEditRequestSchema.safeParse(payload);
-      if (validatedPayload.error) {
-        console.error("Error:", validatedPayload.error);
-        toast.error(`Invalid payload: `);
-        throw new Error("Invalid payload");
-      }
-
-      devLog("Payload:", validatedPayload.data);
-
-      // await sleep(2000)
-      const response = await api.put("/api/v1/users/me", validatedPayload.data);
-      return response.data;
-    }),
-    onSuccess: (data) => {
-      setEditMode(false);
-      queryClient.invalidateQueries({ queryKey: ["users", "me"] });
-      toast.success("Successfully edited account details");
-      devLog("Success:", data);
-    },
-    onError: (error) => {
-      toast.error("Failed to edit account details");
-      logApiError(error);
-    },
-  })
 
   useEffect(() => {
     if (!userDetails) return;
@@ -90,11 +52,6 @@ export default function MyUserDetails() {
     }
   }, [userDetails])
 
-  useEffect(() => {
-    if (isSuccess || isError) {
-      setIsModalOpen(false);
-    }
-  }, [isSuccess, isError])
 
   // Loading State
   if (!userDetails) {
@@ -150,7 +107,7 @@ export default function MyUserDetails() {
 
   return (
     <React.Fragment>
-      <div className="w-full flex flex-col gap-8 animate-in fade-in duration-500">
+      <div className="w-full flex flex-col gap-4 animate-in fade-in duration-500">
 
         {/* Header Section */}
         <div className="border-b pb-2">
@@ -227,7 +184,7 @@ export default function MyUserDetails() {
                 )}
               </div>
 
-              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2">
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-2 mt-2">
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary/10 text-secondary">
                   <Shield className="w-3 h-3" />
                   <span className="capitalize">{userDetails.role}</span>
@@ -402,115 +359,30 @@ export default function MyUserDetails() {
               </div>
             )}
           </div>
-        </div >
 
+          <UserPreferences className="" />
+
+        </div>
         <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-muted-foreground/60 font-mono">
           <div className="flex items-center gap-1">
             <Calendar className="w-3 h-3" />
             <span>Joined {formatDate(userDetails.created_at)}</span>
           </div>
         </div>
-
       </div>
 
-      <Modal
-        className="relative border border-border shadow-lg rounded-xl p-6 sm:p-8"
-        size="2xl"
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      >
-        <div className="flex flex-col gap-4">
-          {/* Header Section */}
-          <div>
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight">
-              Confirm Details
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Please review your credentials below.{" "}
-              <span className="font-semibold text-destructive/80">
-                All changes made will be permanent.
-              </span>
-            </p>
-          </div>
+      <SaveChangesModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        userDetails={userDetails}
+        selectedCourse={selectedCourse}
+        selectedYear={selectedYear}
+        setEditMode={setEditMode}
+        firstNameRef={firstNameRef}
+        lastNameRef={lastNameRef}
+        emailRef={emailRef}
+      />
 
-          {/* Data Display Section */}
-          <div className="rounded-lg border bg-muted/30 p-4">
-            <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
-
-              <dt className="font-medium text-muted-foreground">First Name:</dt>
-              <dd className="font-semibold text-foreground truncate">
-                {userDetails.first_name
-                  ? `${userDetails.first_name}*`
-                  : firstNameRef.current?.value || "-"}
-              </dd>
-
-              <dt className="font-medium text-muted-foreground">Last Name:</dt>
-              <dd className="font-semibold text-foreground truncate">
-                {userDetails.last_name
-                  ? `${userDetails.last_name}*`
-                  : lastNameRef.current?.value || "-"}
-              </dd>
-
-              <dt className="font-medium text-muted-foreground">Email:</dt>
-              <dd className="font-semibold text-foreground truncate">
-                {userDetails.email
-                  ? `${userDetails.email}*`
-                  : emailRef.current?.value || "-"}
-              </dd>
-
-              <dt className="font-medium text-muted-foreground">Course:</dt>
-              {/* Handle nested object safely if university_course is an object */}
-              <dd className="font-semibold text-foreground truncate">
-                {userDetails.university_course
-                  ? `${userDetails.university_course.name} (${userDetails.university_course.code})*` // Or .name if it's an object
-                  : selectedCourse?.name || "-"}
-              </dd>
-
-              <dt className="font-medium text-muted-foreground">Year:</dt>
-              <dd className="font-semibold text-foreground truncate">
-                {userDetails.course_year
-                  ? `${userDetails.course_year}*`
-                  : selectedYear || "-"}
-              </dd>
-
-            </dl>
-          </div>
-          <p className="text-xs text-muted-foreground">
-            If you have any questions, please contact your APU administrator.
-          </p>
-
-          <div className="flex justify-end items-center gap-3 mt-2">
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-2 hover:cursor-pointer"
-            >
-              Go Back
-            </button>
-            <button
-              onClick={() => { editAccountDetails() }}
-              className="inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2 bg-primary text-primary-foreground shadow 
-                hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:cursor-pointer 
-                transition-colors disabled:opacity-50 disabled:pointer-events-none"
-              disabled={isPending}
-            >
-              Confirm & Save
-            </button>
-          </div>
-        </div>
-
-        <AnimatePresence>
-          {isPending && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute top-0 right-0 inset-0 bg-black/50 backdrop-blur-sm flex flex-col justify-center items-center gap-2 text-sm text-muted-foreground">
-              <LoadingSpinner />
-              <span>Saving...</span>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </Modal>
     </React.Fragment >
   );
 }

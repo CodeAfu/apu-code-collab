@@ -9,6 +9,10 @@ export interface UniversityCourse {
   code: string;
 }
 
+export interface TechPreference {
+  id: string;
+  name: string;
+}
 
 export interface UserDetails {
   id: string;
@@ -25,6 +29,8 @@ export interface UserDetails {
   university_course: UniversityCourse | null,
   course_year: string | null;
   github_repositories: GitHubRepositoryLocal[];
+  preferred_programming_languages: TechPreference[];
+  preferred_frameworks: TechPreference[];
   created_at: Date;
   updated_at: Date;
 }
