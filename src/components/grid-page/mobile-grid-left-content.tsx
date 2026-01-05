@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import { createPortal } from "react-dom";
 import LeftBar from "./left-bar";
 import Backdrop from "../backdrop";

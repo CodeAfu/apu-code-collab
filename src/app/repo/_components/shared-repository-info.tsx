@@ -27,6 +27,8 @@ import SkillsModal from "./skills-modal";
 import { SkillItem } from "../types";
 import DescriptionSection from "./description-section.tsx";
 import { AnimatePresence, motion } from "motion/react";
+import { toast } from "sonner";
+import DeleteRepoConfirmationModal from "./delete-repo-confirmation-modal";
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString("en-UK", {
@@ -46,6 +48,8 @@ export default function SharedRepositoryInfo() {
   const [skills, setSkills] = useState<SkillItem[]>([{ id: "init-1", name: "" }]);
   const [isSkillsModalOpen, setIsSkillsModalOpen] = useState(false);
   const skillsPopulated = useRef(false);
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const { data: repo } = useSuspenseQuery<GitHubRepository>({
     queryKey: ["github", "repos", githubUsername, repositoryName],
@@ -71,6 +75,7 @@ export default function SharedRepositoryInfo() {
 
   const {
     mutate: linkRepoHandler,
+    reset: resetLinkState,
     isPending: isRepoLinkPending,
     isSuccess: isRepoLinkSuccess,
     isError: isRepoLinkError
@@ -88,15 +93,63 @@ export default function SharedRepositoryInfo() {
       params.append("repo_name", repo.name);
       params.append("url", repo.html_url);
       devLog("Params:", params);
-      const response = await api.post(`/api/v1/github/repos?${params.toString()}`)
+
+      const statsPayload = {
+        repository_language: repo.language,
+        topics: repo.topics,
+        forks_count: repo.forks_count,
+        stargazers_count: repo.stargazers_count,
+        subscribers_count: repo.subscribers_count,
+        open_issues_count: repo.open_issues_count,
+      }
+      devLog("Stats Payload:", statsPayload);
+
+      toast.loading("Linking...");
+      const response = await api.post(`/api/v1/github/repos?${params.toString()}`, statsPayload)
       queryClient.invalidateQueries({ queryKey: ["github", "repos"] });
       return response.data;
     }),
     onSuccess: (data) => {
+      toast.dismiss();
       devLog("Success:", data);
+      toast.success("Successfully linked!");
+      resetDeleteState();
     },
     onError: (error) => {
+      toast.dismiss();
       logApiError(error);
+      toast.error("Failed to link");
+    },
+  })
+
+  const {
+    mutate: deleteRepoHandler,
+    reset: resetDeleteState,
+    isPending: isRepoDeletePending,
+    isSuccess: isRepoDeleteSuccess,
+  } = useMutation({
+    mutationFn: withAuth(async () => {
+      if (!repoLocal) {
+        throw new Error("Missing repo local");
+      }
+
+      devLog("Repo Local ID:", repoLocal.id);
+
+      toast.loading("Removing...");
+      const response = await api.delete(`/api/v1/github/repos/local/${repoLocal.id}`);
+      return response.data;
+    }),
+    onSuccess: (data) => {
+      toast.dismiss();
+      queryClient.invalidateQueries({ queryKey: ["github", "repos", "local"] });
+      devLog("Success:", data);
+      toast.success("Successfully removed!");
+      resetLinkState();
+    },
+    onError: (error) => {
+      toast.dismiss();
+      logApiError(error);
+      toast.error("Failed to remove");
     },
   })
 
@@ -104,7 +157,10 @@ export default function SharedRepositoryInfo() {
     if (skillsPopulated.current) {
       return;
     }
-    if (repoLocal && repoLocal.skills.length <= 0) {
+    if (!repoLocal) {
+      return;
+    }
+    if (repoLocal.skills.length <= 0) {
       return;
     }
     skillsPopulated.current = true;
@@ -236,9 +292,14 @@ export default function SharedRepositoryInfo() {
                 >
                   {repoLocal ? "Public" : "Private"}
                 </span>
-                {repoLocal && (
-                  <button className="font-medium">
-                    Remove
+                {repoLocal && isOwner && (
+                  <button
+                    onClick={() => setIsDeleteModalOpen(true)}
+                    className="ml-2 font-medium bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-md px-1.5 text-sm
+                      hover:cursor-pointer transition-colors disabled:opacity-50 disabled:pointer-events-none"
+                    disabled={isRepoDeletePending || isRepoDeleteSuccess}
+                  >
+                    {isRepoDeletePending ? "Deleting..." : "Delete"}
                   </button>
                 )}
               </div>
@@ -339,6 +400,13 @@ export default function SharedRepositoryInfo() {
           setIsSkillsModalOpen={setIsSkillsModalOpen}
         />
       )}
+      <DeleteRepoConfirmationModal
+        isOpen={isDeleteModalOpen}
+        setIsOpen={setIsDeleteModalOpen}
+        deleteRepoHandler={deleteRepoHandler}
+        isRepoDeletePending={isRepoDeletePending}
+        isRepoDeleteSuccess={isRepoDeleteSuccess}
+      />
     </React.Fragment >
   );
 }

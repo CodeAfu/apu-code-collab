@@ -78,6 +78,7 @@ export interface GitHubRepository {
   size: number;
   stargazers_count: number;
   watchers_count: number;
+  subscribers_count: number;
   language: string | null;
   has_issues: boolean;
   has_projects: boolean;
@@ -114,9 +115,18 @@ export interface GitHubRepositoryLocal {
   name: string;
   description: string;
   url: string;
+
+  language: string;
+  topics: string[];
+  forks_count: number;
+  stargazers_count: number;
+  subscribers_count: number;
+  open_issues_count: number;
+
   collaborators: string[]; // GitHub usernames
   contributors: string[]; // GitHub usernames
   skills: string[];
+
   created_at: Date;
   updated_at: Date;
 }

@@ -30,7 +30,7 @@ export default function BrowsePage() {
     <div className="flex flex-col">
       <AuthGuard requireGitHubAccessToken fallback={<LoadingSkeleton />}>
         <GridPageLayout>
-          <div className="max-w-7xl mx-auto px-4 py-8">
+          <div className="container mx-auto px-4 py-8">
             <div className="flex flex-col gap-4">
               <Suspense fallback={<LoadingSkeleton />}>
                 <BrowseContents />

@@ -41,16 +41,17 @@ export default function SkillsModal({ repositoryId, skills, setSkills, isSkillsM
       }
       toast.loading("Saving skills...");
       const response = await api.post(`/api/v1/github/repos/${repositoryId}/skills`, payload)
-      toast.dismiss();
       return response.data;
     }),
     onSuccess: (data) => {
+      toast.dismiss();
       devLog("Success:", data);
       toast.success("Successfully saved skills");
       setIsSkillsModalOpen(false);
       queryClient.invalidateQueries({ queryKey: ["github", "repos"] });
     },
     onError: (error) => {
+      toast.dismiss();
       logApiError(error);
       toast.error("Failed to save skills");
       setError("Failed to save skills");

@@ -17,10 +17,6 @@ const routes: NavRoute[] = [
     href: "/browse",
   },
   {
-    label: "Guides",
-    href: "/guides",
-  },
-  {
     label: "Color Showcase",
     href: "/color-showcase",
     devOnly: true,
@@ -36,7 +32,6 @@ export default function Navbar() {
       <nav className="sm:h-16 h-12 bg-card flex px-2 justify-between items-center gap-4 border-b border-border">
         <div className="flex items-center justify-between gap-4 w-full h-full">
           <div className="flex items-center gap-2 h-full">
-            <MobileGridLeftToggle />
             <div className="dark:bg-white/75 flex items-center sm:size-10 size-8 mr-4 hover:scale-105 transition-transform duration-200">
               <Link href="/">
                 <Image
