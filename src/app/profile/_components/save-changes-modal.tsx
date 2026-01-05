@@ -58,16 +58,17 @@ export default function SaveChangesModal({
       devLog("Payload:", validatedPayload.data);
       toast.loading("Saving...");
       const response = await api.put("/api/v1/users/me", validatedPayload.data);
-      toast.dismiss();
       return response.data;
     }),
     onSuccess: (data) => {
+      toast.dismiss();
       setEditMode(false);
       queryClient.invalidateQueries({ queryKey: ["users", "me"] });
       toast.success("Successfully edited account details");
       devLog("Success:", data);
     },
     onError: (error) => {
+      toast.dismiss();
       toast.error("Failed to edit account details");
       logApiError(error);
     },

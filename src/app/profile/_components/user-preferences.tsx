@@ -57,16 +57,17 @@ export default function UserPreferences({ className, ...props }: React.HTMLAttri
 
       toast.loading("Saving...");
       const response = await api.put("/api/v1/users/me/preferences/persist", payload);
-      toast.dismiss();
       devLog("Preferences:", response.data);
       return response.data;
     }),
     onSuccess: () => {
+      toast.dismiss();
       queryClient.invalidateQueries({ queryKey: ["users", "me"] });
       toast.success("Preferences updated successfully!");
       setIsEditing(false);
     },
     onError: (err) => {
+      toast.dismiss();
       logApiError(err);
       toast.error("Failed to update preferences.");
     },
