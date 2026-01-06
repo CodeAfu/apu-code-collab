@@ -48,10 +48,12 @@ export default function RootLayout({
           {children}
           <Footer />
           <Toaster theme="dark" position="top-center" closeButton={true} />
+          {/*
           <DevTray>
             <ThemeToggle />
           </DevTray>
           <ScreenSizeIndicator />
+          */}
         </Providers>
       </body>
     </html>

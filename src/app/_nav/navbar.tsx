@@ -4,7 +4,6 @@ import Nav from "./nav";
 import Image from "next/image";
 import Link from "next/link";
 import MobileNav from "./mobile-nav";
-import MobileGridLeftToggle from "@/components/grid-page/mobile-grid-left-toggle";
 import AuthComponents from "./auth-components";
 
 const routes: NavRoute[] = [
@@ -16,17 +15,18 @@ const routes: NavRoute[] = [
     label: "Browse",
     href: "/browse",
   },
-  {
-    label: "Color Showcase",
-    href: "/color-showcase",
-    devOnly: true,
-  },
+  // {
+  //   label: "Color Showcase",
+  //   href: "/color-showcase",
+  //   devOnly: true,
+  // },
 ];
 
 export default function Navbar() {
   const visibleRoutes = routes.filter(
     (route) => !route.devOnly || process.env.NODE_ENV === "development"
   );
+  console.log(process.env.NODE_ENV)
   return (
     <Fragment>
       <nav className="sm:h-16 h-12 bg-card flex px-2 justify-between items-center gap-4 border-b border-border">

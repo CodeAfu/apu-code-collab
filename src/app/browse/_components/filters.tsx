@@ -94,7 +94,7 @@ export default function RepoFilters() {
         <div className="space-y-2">
           <Label>APU ID</Label>
           <Input
-            placeholder="e.g. TP060000"
+            placeholder="e.g. TP023300"
             value={apuId}
             onChange={(e) => setApuId(e.target.value.toUpperCase())}
             className="bg-background"
@@ -103,7 +103,7 @@ export default function RepoFilters() {
         <div className="space-y-2">
           <Label>GitHub Username</Label>
           <Input
-            placeholder="e.g. codeafu"
+            placeholder="e.g. torvalds"
             value={githubUser}
             onChange={(e) => setGithubUser(e.target.value)}
             className="bg-background"

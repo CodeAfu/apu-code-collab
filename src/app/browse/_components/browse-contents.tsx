@@ -254,7 +254,7 @@ function RepoItem({ repo }: { repo: GitHubItemType }) {
 
             {/* Description */}
             <p className="text-muted-foreground line-clamp-2 text-sm">
-              {repo.description || "No description provided."}
+              {repo.db_repo_description || "No description provided."}
             </p>
 
             {/* Skills */}

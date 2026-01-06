@@ -285,8 +285,14 @@ export default function DashboardPage() {
   );
 }
 
-// --- Helper Component for Stats Cards ---
-function StatsCard({ title, value, icon, description }: { title: string, value: number | string, icon: React.ReactNode, description?: string }) {
+interface StatsCardProps {
+  title: string;
+  value: number | string;
+  icon: React.ReactNode;
+  description?: string;
+}
+
+function StatsCard({ title, value, icon, description }: StatsCardProps) {
   return (
     <Card className="shadow-sm hover:shadow-md transition-all duration-200 border-border/60">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -321,3 +327,4 @@ function DashboardSkeleton() {
     </div>
   )
 }
+

@@ -7,10 +7,14 @@ import LoadingSpinner from "@/components/loading-spinner";
 import AuthGuard from "@/components/auth/auth-guard";
 
 export default function HomePage() {
-  const { isAuthenticated, userDetails, isLoading } = useUser();
+  const { isAuthenticated, isLoading } = useUser();
 
   if (isLoading) {
-    return <div className="flex flex-col items-center justify-center"><LoadingSpinner /></div>;
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (!isAuthenticated) {
@@ -19,7 +23,8 @@ export default function HomePage() {
 
   return (
     <AuthGuard requireGitHubAccessToken withLoadingSpinner>
-      <DashboardView user={userDetails} />
+      <DashboardView />
     </AuthGuard>
   );
 }
+
