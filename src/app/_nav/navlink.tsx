@@ -18,7 +18,9 @@ export default function NavLink({
   ...props
 }: NavLinkProps) {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive = href === "/"
+    ? pathname === href
+    : pathname.startsWith(href)
 
   return (
     <div className="h-full group relative overflow-hidden">

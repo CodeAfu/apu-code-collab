@@ -35,3 +35,4 @@ export const registerMutationOptions = (router: AppRouterInstance): UseMutationO
     logApiError(error);
   },
 });
+

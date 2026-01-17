@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import api from "@/lib/api";
 import LoadingSpinner from "@/components/loading-spinner";
-import { devLog, logApiError } from "@/lib/utils";
+import { devLog, logApiError, sleep } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { useUser } from "@/hooks/use-user";
 
@@ -27,6 +27,7 @@ export default function GithubCallback() {
         try {
           await api.post("/api/v1/users/me/github/link", { code });
           queryClient.invalidateQueries({ queryKey: ["users", "me"] });
+          sleep(2000);
           router.push("/");
         } catch (error) {
           logApiError(error);

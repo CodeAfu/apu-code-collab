@@ -13,11 +13,9 @@ import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { AnimatePresence, motion } from "motion/react";
 
-// Components
 import SearchRepository from "./search-repository";
 import RepoFilters from "./filters";
 
-// --- Types ---
 interface GitHubItemType {
   db_repo_id: string;
   db_repo_description: string | null;

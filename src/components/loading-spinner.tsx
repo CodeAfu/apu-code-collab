@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 import { HTMLAttributes } from "react";
 
 export default function LoadingSpinner({
@@ -8,10 +9,12 @@ export default function LoadingSpinner({
   return (
     <div
       className={cn(
-        "size-12 rounded-full border-4 p-2 border-muted border-b-accent animate-spin",
+        "size-16",
         className
       )}
       {...props}
-    />
+    >
+      <Loader2 className="w-full h-full text-muted-foreground animate-spin" />
+    </div>
   );
 }

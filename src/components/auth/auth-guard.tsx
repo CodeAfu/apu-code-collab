@@ -31,9 +31,9 @@ export default function AuthGuard({ children, withLoadingSpinner, allowedRoles, 
       router.push(`/user/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }
-    // if (isRoleMismatch) {
-    //   router.push("/unauthorized");
-    // }
+    if (isRoleMismatch) {
+      router.push("/unauthorized");
+    }
 
     if (userDetails && isMissingGithub) {
       devLog("Redirecting to GitHub connection...");
@@ -50,7 +50,6 @@ export default function AuthGuard({ children, withLoadingSpinner, allowedRoles, 
         </div>
       );
     }
-
     return null;
   }
 

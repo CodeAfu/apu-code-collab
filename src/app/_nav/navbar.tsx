@@ -15,6 +15,11 @@ const routes: NavRoute[] = [
     label: "Browse",
     href: "/browse",
   },
+  {
+    label: "Admin",
+    href: "/admin",
+    adminOnly: true,
+  },
   // {
   //   label: "Color Showcase",
   //   href: "/color-showcase",
