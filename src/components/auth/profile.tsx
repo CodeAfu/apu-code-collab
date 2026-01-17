@@ -19,7 +19,7 @@ export default function Profile() {
     try {
       await api.post("/api/v1/auth/logout");
       cleartAuthToken();
-      await queryClient.invalidateQueries();
+      queryClient.removeQueries();
     } catch (error) {
       logApiError(error);
     }
