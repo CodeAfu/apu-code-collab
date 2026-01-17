@@ -26,7 +26,7 @@ export default function GithubCallback() {
       const linkAccount = async () => {
         try {
           await api.post("/api/v1/users/me/github/link", { code });
-          queryClient.invalidateQueries({ queryKey: ["users", "me"] });
+          queryClient.removeQueries()
           sleep(2000);
           router.push("/");
         } catch (error) {
