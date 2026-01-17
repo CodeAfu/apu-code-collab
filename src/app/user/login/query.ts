@@ -2,7 +2,7 @@ import axios from "axios";
 import { LoginFormType, LoginResponse } from "@/app/user/login/types";
 import { API_BASE_URL } from "@/lib/consts";
 import { Token } from "@/types/auth";
-import { mutationOptions } from "@tanstack/react-query";
+import { mutationOptions, QueryClient } from "@tanstack/react-query";
 import { jsonLog, logApiError } from "@/lib/utils";
 
 const login = async (data: LoginFormType): Promise<LoginResponse> => {
@@ -21,11 +21,13 @@ const login = async (data: LoginFormType): Promise<LoginResponse> => {
 };
 
 export const loginMutationOptions = (
-  setToken: (token: Token) => void
+  setToken: (token: Token) => void,
+  queryClient: QueryClient
 ) => mutationOptions({
   mutationFn: login,
   onSuccess: (data: LoginResponse) => {
     setToken(data);
+    queryClient.invalidateQueries({ queryKey: ["users", "me"] });
   },
   onError: (error) => {
     if (axios.isAxiosError(error)) {

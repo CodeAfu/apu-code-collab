@@ -43,7 +43,7 @@ export default function LoginForm() {
     isPending,
     isError,
     error: loginError,
-  } = useMutation(loginMutationOptions(setToken));
+  } = useMutation(loginMutationOptions(setToken, queryClient));
 
   const onSubmit = (data: LoginFormType) => {
     handleLogin(data);
