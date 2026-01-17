@@ -25,7 +25,7 @@ export default function LoginForm() {
     if (redirectTo) {
       router.push(redirectTo);
     } else {
-      router.back();
+      router.push("/")
     }
   }, [isAuthenticated, router, redirectTo]);
 
@@ -97,3 +97,4 @@ export default function LoginForm() {
     </form>
   );
 }
+

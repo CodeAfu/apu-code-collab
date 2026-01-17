@@ -17,7 +17,7 @@ export default function RepositoryCard({ repository }: RepositoryCardProps) {
   };
 
   return (
-    <div className="border border-border rounded-lg p-5 hover:border-blue-400 hover:shadow-md transition-all duration-200 bg-popover animate-in fade-in duration-500">
+    <div className="border border-border rounded-lg p-5 hover:border-blue-400 hover:shadow-md transition-all bg-popover animate-in fade-in duration-500">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2 flex-1 min-w-0">
           <Code2 className="w-5 h-5 text-muted-foreground flex-shrink-0" />

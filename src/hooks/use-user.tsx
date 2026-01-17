@@ -50,7 +50,7 @@ export const useUser = () => {
     queryKey: ["users", "me"],
     queryFn: async () => {
       const response = await api.get("/api/v1/users/me");
-      devLog("users/me", response.data);
+      // devLog("users/me", response.data);
       return response.data;
     },
     staleTime: 1000 * 60 * 5,
@@ -78,3 +78,4 @@ export const useUser = () => {
     error,
   };
 };
+
