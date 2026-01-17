@@ -13,7 +13,7 @@ import {
   Unlink
 } from "lucide-react";
 import { GitHubLogoIcon as Github } from "@radix-ui/react-icons";
-import { cn } from "@/lib/utils";
+import { cn, logApiError } from "@/lib/utils";
 import api from "@/lib/api";
 import { User, UserRole, AdminUpdateUserPayload } from "./types";
 import UserFormModal from "./_components/user-form-modal";
@@ -42,14 +42,16 @@ export default function UserAdminPage() {
       setIsModalOpen(false);
       setEditingUser(null);
     },
-    onError: () => {
+    onError: (error) => {
       toast.dismiss();
       toast.error("Failed to update user.");
+      logApiError(error);
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
+      toast.loading("Deleting user...");
       return (await api.delete(`/api/v1/users/${id}`)).data;
     },
     onSuccess: () => {
@@ -57,9 +59,10 @@ export default function UserAdminPage() {
       toast.success("User deleted successfully.");
       queryClient.invalidateQueries({ queryKey: ["users"] });
     },
-    onError: () => {
+    onError: (error) => {
       toast.dismiss();
       toast.error("Failed to delete user.");
+      logApiError(error);
     },
   });
 

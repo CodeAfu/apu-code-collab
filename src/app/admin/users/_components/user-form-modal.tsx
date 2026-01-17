@@ -38,7 +38,7 @@ export default function UserFormModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="md" className="p-0 overflow-hidden">
+    <Modal isOpen={isOpen} onClose={onClose} size="xl" className="p-0 overflow-hidden">
       <div className="flex items-center justify-between p-6 border-b">
         <div>
           <h2 className="text-lg font-semibold">Edit User</h2>

@@ -8,8 +8,10 @@ import { generateRandomNodeKey, logApiError } from "@/lib/utils";
 import { LogOut } from "lucide-react";
 import { useClearAuthToken } from "@/stores/auth-store";
 import api from "@/lib/api";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Profile() {
+  const queryClient = useQueryClient();
   const menus = useProfileMenu();
   const cleartAuthToken = useClearAuthToken();
 
@@ -17,6 +19,7 @@ export default function Profile() {
     try {
       await api.post("/api/v1/auth/logout");
       cleartAuthToken();
+      await queryClient.invalidateQueries();
     } catch (error) {
       logApiError(error);
     }
