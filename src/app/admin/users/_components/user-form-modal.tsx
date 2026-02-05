@@ -23,9 +23,9 @@ export default function UserFormModal({
   useEffect(() => {
     if (isOpen && initialData) {
       setFormData({
-        first_name: initialData.first_name || "",
-        last_name: initialData.last_name || "",
-        email: initialData.email || "",
+        first_name: initialData.first_name ?? undefined,
+        last_name: initialData.last_name ?? undefined,
+        email: initialData.email ?? undefined,
         role: initialData.role,
         is_active: initialData.is_active,
       });
